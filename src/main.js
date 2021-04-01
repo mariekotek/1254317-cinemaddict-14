@@ -49,4 +49,4 @@ render(movieListContainer, createShowMoreButton(), 'afterend');
 const siteFooterElement = document.querySelector('.footer');
 
 //Рендерит попан с информацией о фильме
-//render(siteFooterElement, createMovieInfoPopup(), 'afterend');
+render(siteFooterElement, createMovieInfoPopup(), 'afterend');
