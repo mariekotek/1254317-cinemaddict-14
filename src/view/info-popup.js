@@ -11,7 +11,7 @@ export const createMovieInfoPopup = () => {
 
           <p class="film-details__age">18+</p>
         </div>
-
+±
         <div class="film-details__info">
           <div class="film-details__info-head">
             <div class="film-details__title-wrap">
@@ -167,5 +167,5 @@ export const createMovieInfoPopup = () => {
       </section>
     </div>
   </form>
-</section>`
-}
+</section>`;
+};
