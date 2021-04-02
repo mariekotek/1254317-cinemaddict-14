@@ -3,7 +3,7 @@ import {createMovieList} from './view/movie-card.js';
 import {createMovieCardTemplate} from './view/movie-card.js';
 import {createUserRankTemplate} from './view/user-rank.js';
 import {createShowMoreButton} from './view/show-more-btn.js';
-import{createMovieInfoPopup} from './view/info-popup.js';
+import {createMovieInfoPopup} from './view/info-popup.js';
 
 const CARDS_NUMBER = 5;
 const TOP_RATED = 2;
