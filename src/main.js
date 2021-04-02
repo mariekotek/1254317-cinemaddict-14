@@ -37,10 +37,10 @@ for (let i = 0; i < CARDS_NUMBER; i++) {
   render(movieListContainer, createMovieCardTemplate(), 'beforeend');
 }
 for (let i = 0; i < MOST_COMMENTED; i++) {
-  render(mostCommentedSectionContainer, createMovieCardTemplate, 'beforeend');
+  render(mostCommentedSectionContainer, createMovieCardTemplate(), 'beforeend');
 }
 for (let i = 0; i < TOP_RATED; i++) {
-  render(topRatedSectionContainer, createMovieCardTemplate, 'beforeend');
+  render(topRatedSectionContainer, createMovieCardTemplate(), 'beforeend');
 }
 
 //Рендерит кнопку 'Показать еще'
