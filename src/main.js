@@ -4,6 +4,7 @@ import {createMovieCardTemplate} from './view/movie-card.js';
 import {createUserRankTemplate} from './view/user-rank.js';
 import {createShowMoreButton} from './view/show-more-btn.js';
 import{createMovieInfoPopup} from './view/info-popup.js';
+import {create} from './view/'
 
 const CARDS_NUMBER = 5;
 const TOP_RATED = 2;
