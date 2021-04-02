@@ -27,26 +27,26 @@ render(siteMainElement, createMovieList(), 'beforeend');
 
 const filmsSection = siteMainElement.querySelector('.films');
 const movieListContainer = filmsSection.querySelector('.films-list__container');
-const mostCommentedSection = filmsSection.lastElementChild;
+const mostCommentedSection = filmsSection.querySelector('.films-list__most-commented');
 const mostCommentedSectionContainer = mostCommentedSection.querySelector('.films-list__container');
-const topRatedSection = filmsSection.querySelector('.films-list--extra');
+const topRatedSection = filmsSection.querySelector('.films-list__top-rated');
 const topRatedSectionContainer = topRatedSection.querySelector('.films-list__container');
 
 //Рендерит карточки фильмов i количество раз
-for (let i = 0; i < CARDS_NUMBER; i++) {
-  render(movieListContainer, createMovieCardTemplate(), 'beforeend');
-}
-for (let i = 0; i < MOST_COMMENTED; i++) {
-  render(mostCommentedSectionContainer, createMovieCardTemplate(), 'beforeend');
-}
-for (let i = 0; i < TOP_RATED; i++) {
-  render(topRatedSectionContainer, createMovieCardTemplate(), 'beforeend');
-}
+const renderCard = (n, place) => {
+  for (let i = 0; i < n; i++) {
+    render(place, createMovieCardTemplate(),'beforeend');
+  }
+};
+
+renderCard(CARDS_NUMBER, movieListContainer);
+renderCard(MOST_COMMENTED, mostCommentedSectionContainer);
+renderCard(TOP_RATED, topRatedSectionContainer);
 
 //Рендерит кнопку 'Показать еще'
 render(movieListContainer, createShowMoreButton(), 'afterend');
 
 const siteFooterElement = document.querySelector('.footer');
 
-//Рендерит попан с информацией о фильме
+//Рендерит попап с информацией о фильме
 render(siteFooterElement, createMovieInfoPopup(), 'afterend');

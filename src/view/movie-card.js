@@ -5,12 +5,12 @@ export const createMovieList = () => {
                     <div class="films-list__container">
                     </div>
                </section>
-               <section class="films-list films-list--extra">
+               <section class="films-list films-list--extra films-list__top-rated">
                     <h2 class="films-list__title">Top rated</h2>
                     <div class="films-list__container">
                     </div>
                </section>
-               <section class="films-list films-list--extra">
+               <section class="films-list films-list--extra films-list__most-commented">
                     <h2 class="films-list__title">Most commented</h2>
                     <div class="films-list__container">
                     </div>
