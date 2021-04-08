@@ -4,8 +4,12 @@ import {createMovieCardTemplate} from './view/movie-card.js';
 import {createUserRankTemplate} from './view/user-rank.js';
 import {createShowMoreButton} from './view/show-more-btn.js';
 import {createMovieInfoPopup} from './view/info-popup.js';
+import {generateMovieCard} from './mock/moviecard-mock.js';
+import {generateComment} from './mock/comment-mock.js';
+import {generatePopup} from './mock/popup-mock.js';
 
 const CARDS_NUMBER = 5;
+const CARDS_NUMBER_PER_STEP = 4;
 const TOP_RATED = 2;
 const MOST_COMMENTED = 2;
 
@@ -25,17 +29,22 @@ render(siteHeaderElement, createUserRankTemplate(), 'beforeend');
 //Рендерит контейнер для списка фильмов
 render(siteMainElement, createMovieList(), 'beforeend');
 
+//Секции/контейнеры
 const filmsSection = siteMainElement.querySelector('.films');
 const movieListContainer = filmsSection.querySelector('.films-list__container');
 const mostCommentedSection = filmsSection.querySelector('.films-list__most-commented');
 const mostCommentedSectionContainer = mostCommentedSection.querySelector('.films-list__container');
 const topRatedSection = filmsSection.querySelector('.films-list__top-rated');
 const topRatedSectionContainer = topRatedSection.querySelector('.films-list__container');
+const siteFooterElement = document.querySelector('.footer');
+
+//Массив объектов
+const moviesInfo = new Array(15).fill().map(() => generateMovieCard());
 
 //Рендерит карточки фильмов i количество раз
 const renderCard = (n, place) => {
   for (let i = 0; i < n; i++) {
-    render(place, createMovieCardTemplate(),'beforeend');
+    render(place, createMovieCardTemplate(moviesInfo[i]),'beforeend');
   }
 };
 
@@ -43,10 +52,19 @@ renderCard(CARDS_NUMBER, movieListContainer);
 renderCard(MOST_COMMENTED, mostCommentedSectionContainer);
 renderCard(TOP_RATED, topRatedSectionContainer);
 
-//Рендерит кнопку 'Показать еще'
-render(movieListContainer, createShowMoreButton(), 'afterend');
+if (moviesInfo.length > CARDS_NUMBER_PER_STEP) {
+  render(movieListContainer, createShowMoreButton(), 'beforeend');
 
-const siteFooterElement = document.querySelector('.footer');
+  const showMoreButton = movieListContainer.querySelector('.films-list__show-more');
 
+  showMoreButton.addEventListener('click', (evt) => {
+    evt.preventDefault();
+    alert('Works!');
+  });
+}
+/**
 //Рендерит попап с информацией о фильме
-render(siteFooterElement, createMovieInfoPopup(), 'afterend');
+const moviePopupList = new Array(1).fill().map(() => generatePopup());
+const commentsList = new Array(10).fill().map(() => generateComment());
+render(siteFooterElement, createMovieInfoPopup(moviePopupList[0], commentsList[0]), 'afterend');
+*/

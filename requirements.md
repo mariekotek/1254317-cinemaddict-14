@@ -18,7 +18,7 @@ npm i eslint@7.13.0 -DE
 
 ## Зависимости для разработки (`devDependencies`)
 
-* eslint@7.13.0
+* eslint@3.0.0
 * eslint-config-htmlacademy@0.6.0
 * webpack@4.44.2
 * webpack-cli@3.3.12
