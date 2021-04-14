@@ -1,15 +1,22 @@
-import {getRandomInteger} from './utils.js';
-import {generateRandom} from './utils.js';
-import {getRandomNumber} from './utils.js';
+const getMoviesOnWatchlist = (moviesInfo) => moviesInfo.filter((movie) => movie.isOnWatchlist);
+const getWatchedMovies = (moviesInfo) => moviesInfo.filter((movie) => movie.isWatched);
+const getFavoriteMovies = (moviesInfo) => moviesInfo.filter((movie) => movie.isFavorite);
 
+const moviesFilters = new Map ( [
+  ['All', (moviesInfo) => moviesInfo],
+  ['Watchlist', getMoviesOnWatchlist],
+  ['History', getWatchedMovies],
+  ['Favorites', getFavoriteMovies],
+]);
 
-export const generateFilter = (movies) => {
-  return Object.entries(movieToFilterMap).map(([filterName, countMovies]) => {
-    return {
+export const generateFilters = (moviesInfo) => {
+  const filters = [];
+
+  for (const [filterName, filter] of moviesFilters.entries()) {
+    filters.push({
       name: filterName,
-      count: countMovies(movies),
-    };
-  });
+      count: filter(moviesInfo).length,
+      filter: filter(moviesInfo),
+    });
+  }
 };
-
-console.log(movie);

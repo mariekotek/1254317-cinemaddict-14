@@ -1,7 +1,6 @@
-export const createMovieInfoPopup = (popup,comment) => {
+export const createMovieInfoPopup = (popup, comment) => {
   const {poster, age, name, originalName, rate, director, actors, writers, releaseDate, runtime, country, genre,
-        description, isWatched, watched, favourite, comments,} = popup;
-  const {emotion, date, author, message} = comment;
+    description} = popup;
   return `<section class="film-details">
   <form class="film-details__inner" action="" method="get">
     <div class="film-details__top-container">
@@ -62,7 +61,7 @@ export const createMovieInfoPopup = (popup,comment) => {
           </table>
 
           <p class="film-details__film-description">
-            The film opens following a murder at a cabaret in Mexico City in 1936, and then presents the events leading up to it in flashback. The Great Flamarion (Erich von Stroheim) is an arrogant, friendless, and misogynous marksman who displays his trick gunshot act in the vaudeville circuit. His show features a beautiful assistant, Connie (Mary Beth Hughes) and her drunken husband Al (Dan Duryea), Flamarion's other assistant. Flamarion falls in love with Connie, the movie's femme fatale, and is soon manipulated by her into killing her no good husband during one of their acts.
+            ${description}
           </p>
         </div>
       </div>
@@ -84,58 +83,60 @@ export const createMovieInfoPopup = (popup,comment) => {
         <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">4</span></h3>
 
         <ul class="film-details__comments-list">
+        { comments.map(comment =>
           <li class="film-details__comment">
             <span class="film-details__comment-emoji">
-              <img src="${emotion}" width="55" height="55" alt="emoji-smile">
+              <img src="${comment.emotion}" width="55" height="55" alt="emoji-smile">
             </span>
             <div>
-              <p class="film-details__comment-text">${message}</p>
+              <p class="film-details__comment-text">${comment.message}</p>
               <p class="film-details__comment-info">
-                <span class="film-details__comment-author">${author}</span>
-                <span class="film-details__comment-day">${date}</span>
+                <span class="film-details__comment-author">${comment.author}</span>
+                <span class="film-details__comment-day">${comment.date}</span>
                 <button class="film-details__comment-delete">Delete</button>
               </p>
             </div>
           </li>
           <li class="film-details__comment">
             <span class="film-details__comment-emoji">
-              <img src="${emotion}" width="55" height="55" alt="emoji-sleeping">
+              <img src="${comment.emotion}" width="55" height="55" alt="emoji-sleeping">
             </span>
             <div>
-              <p class="film-details__comment-text">${message}</p>
+              <p class="film-details__comment-text">${comment.message}</p>
               <p class="film-details__comment-info">
-                <span class="film-details__comment-author">${author}</span>
-                <span class="film-details__comment-day">${date}</span>
+                <span class="film-details__comment-author">${comment.author}</span>
+                <span class="film-details__comment-day">${comment.date}</span>
                 <button class="film-details__comment-delete">Delete</button>
               </p>
             </div>
           </li>
           <li class="film-details__comment">
             <span class="film-details__comment-emoji">
-              <img src="${emotion}" width="55" height="55" alt="emoji-puke">
+              <img src="${comment.emotion}" width="55" height="55" alt="emoji-puke">
             </span>
             <div>
-              <p class="film-details__comment-text">${message}</p>
+              <p class="film-details__comment-text">${comment.message}</p>
               <p class="film-details__comment-info">
-                <span class="film-details__comment-author">${author}</span>
-                <span class="film-details__comment-day">${date}</span>
+                <span class="film-details__comment-author">${comment.author}</span>
+                <span class="film-details__comment-day">${comment.date}</span>
                 <button class="film-details__comment-delete">Delete</button>
               </p>
             </div>
           </li>
           <li class="film-details__comment">
             <span class="film-details__comment-emoji">
-              <img src="${emotion}" width="55" height="55" alt="emoji-angry">
+              <img src="${comment.emotion}" width="55" height="55" alt="emoji-angry">
             </span>
             <div>
-              <p class="film-details__comment-text">${message}</p>
+              <p class="film-details__comment-text">${comment.message}</p>
               <p class="film-details__comment-info">
-                <span class="film-details__comment-author">${author}</span>
-                <span class="film-details__comment-day">${date}</span>
+                <span class="film-details__comment-author">${comment.author}</span>
+                <span class="film-details__comment-day">${comment.date}</span>
                 <button class="film-details__comment-delete">Delete</button>
               </p>
             </div>
           </li>
+          )}
         </ul>
 
         <div class="film-details__new-comment">

@@ -18,10 +18,8 @@ export const createMovieList = () => {
             </section> `;
 };
 
-
-
 export const createMovieCardTemplate = (movie) => {
-  const {poster, watchList, watched, favourite, name, rate, year, duration, genre, description, comments} = movie;
+  const {poster, name, rate, year, duration, genre, description, comments} = movie;
   return ` <article class="film-card">
           <h3 class="film-card__title">${name}</h3>
           <p class="film-card__rating">${rate}</p>

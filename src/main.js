@@ -6,12 +6,16 @@ import {createShowMoreButton} from './view/show-more-btn.js';
 import {createMovieInfoPopup} from './view/info-popup.js';
 import {generateMovieCard} from './mock/moviecard-mock.js';
 import {generateComment} from './mock/comment-mock.js';
-import {generatePopup} from './mock/popup-mock.js';
+import {generateFilters} from './mock/main-menu-mock.js';
 
 const CARDS_NUMBER = 5;
 const CARDS_NUMBER_PER_STEP = 4;
 const TOP_RATED = 2;
 const MOST_COMMENTED = 2;
+
+//Массив объектов
+const moviesInfo = new Array(15).fill().map(() => generateMovieCard());
+const filters = generateFilters(moviesInfo);
 
 // Вставляет HTML-код в указанное место
 const render = (container, template, place) => {
@@ -20,7 +24,7 @@ const render = (container, template, place) => {
 
 const siteMainElement = document.querySelector('.main');
 // Рендерит сортировку и фильтры
-render(siteMainElement, createMainMenuTemplate(), 'afterbegin');
+render(siteMainElement, createMainMenuTemplate(filters), 'afterbegin');
 
 const siteHeaderElement = document.querySelector('.header');
 //Рендерит аватар и звание пользователя
@@ -38,9 +42,6 @@ const topRatedSection = filmsSection.querySelector('.films-list__top-rated');
 const topRatedSectionContainer = topRatedSection.querySelector('.films-list__container');
 const siteFooterElement = document.querySelector('.footer');
 
-//Массив объектов
-const moviesInfo = new Array(15).fill().map(() => generateMovieCard());
-
 //Рендерит карточки фильмов i количество раз
 const renderCard = (n, place) => {
   for (let i = 0; i < n; i++) {
@@ -53,6 +54,29 @@ renderCard(MOST_COMMENTED, mostCommentedSectionContainer);
 renderCard(TOP_RATED, topRatedSectionContainer);
 
 if (moviesInfo.length > CARDS_NUMBER_PER_STEP) {
+  let renderedCardsCount = CARDS_NUMBER_PER_STEP;
+
+  render(movieListContainer, createShowMoreButton(), 'beforeend');
+
+  const showMoreButton = movieListContainer.querySelector('.films-list__show-more');
+
+  showMoreButton.addEventListener('click', (evt) => {
+    evt.preventDefault();
+    moviesInfo
+      .slice(renderedCardsCount, renderedCardsCount + CARDS_NUMBER_PER_STEP)
+      .forEach(() => render(movieListContainer, createMovieCardTemplate(moviesInfo), 'beforeend'));
+
+    renderedCardsCount += CARDS_NUMBER_PER_STEP;
+
+    if (renderedCardsCount >= moviesInfo.length) {
+      showMoreButton.remove();
+    }
+  });
+}
+
+
+/**
+if (moviesInfo.length > CARDS_NUMBER_PER_STEP) {
   render(movieListContainer, createShowMoreButton(), 'beforeend');
 
   const showMoreButton = movieListContainer.querySelector('.films-list__show-more');
@@ -62,9 +86,9 @@ if (moviesInfo.length > CARDS_NUMBER_PER_STEP) {
     alert('Works!');
   });
 }
-/**
+*/
+
 //Рендерит попап с информацией о фильме
-const moviePopupList = new Array(1).fill().map(() => generatePopup());
+const moviePopupList = new Array(1).fill().map(() => generateMovieCard());
 const commentsList = new Array(10).fill().map(() => generateComment());
 render(siteFooterElement, createMovieInfoPopup(moviePopupList[0], commentsList[0]), 'afterend');
-*/

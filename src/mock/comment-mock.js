@@ -1,6 +1,4 @@
-import {getRandomInteger} from './utils.js';
-import {generateRandom} from './utils.js';
-import {getRandomNumber} from './utils.js';
+import {generateRandom} from '../utils.js';
 
 //данные для комментариев
 
@@ -8,25 +6,25 @@ const emotions = [
   'images/emoji/smile.png',
   'images/emoji/sleeping.png',
   'images/emoji/puke.png',
-  'images/emoji/angry.png'
+  'images/emoji/angry.png',
 ];
 
 const dates = [
   '2019/12/31 23:59',
   '2 days ago',
-  'Today'
+  'Today',
 ];
 
 const authors = [
   'John Doe',
-  'Tim Macoveev'
+  'Tim Macoveev',
 ];
 
 const messages = [
   'Interesting setting and a good cast',
   'Booooooooooring',
   'Very very old. Meh',
-  'Almost two hours? Seriously?'
+  'Almost two hours? Seriously?',
 ];
 
 //генерирует комментарий
