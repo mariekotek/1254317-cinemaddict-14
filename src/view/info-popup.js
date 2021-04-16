@@ -1,3 +1,5 @@
+
+
 export const createMovieInfoPopup = (popup) => {
   const {poster, age, name, originalName, rate, director, actors, writers, releaseDate, runtime, country, genre,
     description} = popup;
