@@ -19,4 +19,5 @@ export const generateFilters = (moviesInfo) => {
       filter: filter(moviesInfo),
     });
   }
+  return filters;
 };

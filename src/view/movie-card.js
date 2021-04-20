@@ -23,8 +23,8 @@ const createFilmCardTemplate = (film) => {
 
 export default class FilmCard {
   constructor(film) {
-    this._film = film;
     this._element = null;
+    this._film = film;
   }
 
   getTemplate() {
@@ -37,6 +37,18 @@ export default class FilmCard {
     }
 
     return this._element;
+  }
+
+  setClickPoster() {
+    this.getElement().querySelector('.film-card__poster').addEventListener('click');
+  }
+
+  setClickTitle() {
+    this.getElement().querySelector('.film-card__title').addEventListener('click');
+  }
+
+  setClickComments() {
+    this.getElement().querySelector('.film-card__comments').addEventListener('click');
   }
 
   removeElement() {
