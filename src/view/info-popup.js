@@ -142,4 +142,22 @@ export default class FilmPopup {
   removeElement() {
     this._element = null;
   }
+
+  _clickCloseEsc(evt) {
+    // evt.preventDefault();
+    // document.querySelector('footer').classList.remove('hide-overflow');
+    this.addEventListener("keydown", (e) => {
+      if (e.keyCode == 27) {
+        this.classList.remove('hide-overflow');
+      }
+    });
+  }
+
+  closePopup() {
+    siteFooterElement.removeChild(this.getElement());
+  }
+
+  clickClosePopup() {
+    this.getElement().querySelector('.film-details__close-btn').addEventListener('click', this.closePopup);
+  }
 }

@@ -38,17 +38,21 @@ export default class FilmCard {
 
     return this._element;
   }
+  openPopup() {
+    const filmPopupComponent = new FilmPopupView(filmPopupList[0]);
+    renderTemplate(siteFooterElement, new FilmPopupView(filmPopupList[0]), RenderPosition.BEFOREEND);
+  }
 
   setClickPoster() {
-    this.getElement().querySelector('.film-card__poster').addEventListener('click');
+    this.getElement().querySelector('.film-card__poster').addEventListener('click', () => this.openPopup());
   }
 
   setClickTitle() {
-    this.getElement().querySelector('.film-card__title').addEventListener('click');
+    this.getElement().querySelector('.film-card__title').addEventListener('click', () => this.openPopup());
   }
 
   setClickComments() {
-    this.getElement().querySelector('.film-card__comments').addEventListener('click');
+    this.getElement().querySelector('.film-card__comments').addEventListener('click', () => this.openPopup());
   }
 
   removeElement() {

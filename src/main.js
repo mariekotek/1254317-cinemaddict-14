@@ -19,6 +19,7 @@ const COMMENTS_NUMBER = 4;
 
 //Массив объектов
 const films = new Array(15).fill().map(() => generateFilmCard());
+const filmPopupList = new Array(1).fill().map(() => generateFilmCard());
 const filters = generateFilters(films);
 
 const siteMainElement = document.querySelector('.main');
@@ -44,42 +45,42 @@ const topRatedSectionContainer = topRatedSection.querySelector('.films-list__con
 const siteFooterElement = document.querySelector('.footer');
 
 //Рендерит карточки фильмов i количество раз
-const renderCard = (n, place, film) => {
-  const filmCardComponent = new FilmCardView(film);
-  const filmPopupComponent = new FilmPopupView(film);
-
-  const replaceCardToPopup = () => {
-    movieListContainer.replaceChild(filmPopupComponent.getElement(), filmCardComponent.getElement());
-  };
-  const replacePopupToCard = () => {
-    movieListContainer.replaceChild(filmCardComponent.getElement(), filmPopupComponent.getElement());
-  };
-  const onEscKeyDown = (evt) => {
-    if (evt.key === 'Escape' || evt.key === 'Esc') {
-      evt.preventDefault();
-      replacePopupToCard();
-      document.removeEventListener('keydown', onEscKeyDown);
-    }
-  };
-
-  filmCardComponent.getElement().querySelector('.film-card__title').addEventListener('click', () => {
-    replaceCardToPopup();
-    document.addEventListener('keydown', onEscKeyDown);
-  });
-  filmCardComponent.getElement().querySelector('.film-card__poster').addEventListener('click', () => {
-    replaceCardToPopup();
-    document.addEventListener('keydown', onEscKeyDown);
-  });
-  filmCardComponent.getElement().querySelector('.film-card__comments').addEventListener('click', () => {
-    replaceCardToPopup();
-    document.addEventListener('keydown', onEscKeyDown);
-  });
-
-  filmPopupComponent.getElement().querySelector('.film-details__close-btn').addEventListener('submit', (evt) => {
-    evt.preventDefault();
-    replacePopupToCard();
-    document.addEventListener('keydown', onEscKeyDown);
-  });
+const renderCard = (n, place) => {
+  // const filmCardComponent = new FilmCardView(film);
+  // const filmPopupComponent = new FilmPopupView(film);
+  //
+  // const replaceCardToPopup = () => {
+  //   movieListContainer.replaceChild(filmPopupComponent.getElement(), filmCardComponent.getElement());
+  // };
+  // const replacePopupToCard = () => {
+  //   movieListContainer.replaceChild(filmCardComponent.getElement(), filmPopupComponent.getElement());
+  // };
+  // const onEscKeyDown = (evt) => {
+  //   if (evt.key === 'Escape' || evt.key === 'Esc') {
+  //     evt.preventDefault();
+  //     replacePopupToCard();
+  //     document.removeEventListener('keydown', onEscKeyDown);
+  //   }
+  // };
+  //
+  // filmCardComponent.getElement().querySelector('.film-card__title').addEventListener('click', () => {
+  //   replaceCardToPopup();
+  //   document.addEventListener('keydown', onEscKeyDown);
+  // });
+  // filmCardComponent.getElement().querySelector('.film-card__poster').addEventListener('click', () => {
+  //   replaceCardToPopup();
+  //   document.addEventListener('keydown', onEscKeyDown);
+  // });
+  // filmCardComponent.getElement().querySelector('.film-card__comments').addEventListener('click', () => {
+  //   replaceCardToPopup();
+  //   document.addEventListener('keydown', onEscKeyDown);
+  // });
+  //
+  // filmPopupComponent.getElement().querySelector('.film-details__close-btn').addEventListener('submit', (evt) => {
+  //   evt.preventDefault();
+  //   replacePopupToCard();
+  //   document.addEventListener('keydown', onEscKeyDown);
+  // });
   films.forEach((item, index) => {
     return index < n && renderTemplate(place, new FilmCardView(item).getTemplate(), RenderPosition.BEFOREEND);
   });
@@ -127,10 +128,10 @@ if (films.length > CARDS_NUMBER_PER_STEP) {
   });
 }
 
-/*
+
 //Рендерит попап с информацией о фильме
-const filmPopupList = new Array(1).fill().map(() => generateFilmCard());
-renderTemplate(siteFooterElement, createMovieInfoPopup(moviePopupList[0]), 'afterend');
+//renderTemplate(siteFooterElement, new FilmPopupView(filmPopupList[0]), RenderPosition.BEFOREEND);
+
 render(siteFooterElement, new FilmPopupView(filmPopupList[0]).getElement(), RenderPosition.BEFOREEND);
 
 const popupElement = document.querySelector('.film-details');
@@ -146,5 +147,3 @@ const renderComment = (n) => {
 };
 renderComment(COMMENTS_NUMBER);
 
-console.log(filters);
-*/
