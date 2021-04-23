@@ -1,4 +1,6 @@
 import {createElement} from '../utils.js';
+import FilmPopupView from './info-popup.js';
+import {renderTemplate} from '../utils.js';
 
 const createFilmCardTemplate = (film) => {
   const {poster, name, rate, year, duration, genre, description, comments} = film;
@@ -39,8 +41,7 @@ export default class FilmCard {
     return this._element;
   }
   openPopup() {
-    const filmPopupComponent = new FilmPopupView(filmPopupList[0]);
-    renderTemplate(siteFooterElement, new FilmPopupView(filmPopupList[0]), RenderPosition.BEFOREEND);
+    renderTemplate(document.querySelector('.footer'), new FilmPopupView(this._film));
   }
 
   setClickPoster() {

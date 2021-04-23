@@ -46,39 +46,43 @@ const siteFooterElement = document.querySelector('.footer');
 
 //Рендерит карточки фильмов i количество раз
 const renderCard = (n, place) => {
-  // const filmCardComponent = new FilmCardView(film);
-  // const filmPopupComponent = new FilmPopupView(film);
-  //
-  // const replaceCardToPopup = () => {
-  //   movieListContainer.replaceChild(filmPopupComponent.getElement(), filmCardComponent.getElement());
+  // const popupElement = new FilmPopupView(film).getElement();
+  // const filmCardElement = new FilmCardView(film).getElement();
+  // const posterBtn = filmCardElement.querySelector('.film-card__poster');
+  // const openPopup = () => {
+  //   document.querySelector('body').classList.add('hide-overflow');
+  //   siteMainElement.appendChild(popupElement);
   // };
-  // const replacePopupToCard = () => {
-  //   movieListContainer.replaceChild(filmCardComponent.getElement(), filmPopupComponent.getElement());
+  // const closePopup = () => {
+    // if(document.querySelector('body').classList.contains('hide-overflow')) {
+    //  document.querySelector('body').classList.remove('hide-overflow');
+    //};
+  //  siteFooter.removeChild(popupElement);
   // };
   // const onEscKeyDown = (evt) => {
   //   if (evt.key === 'Escape' || evt.key === 'Esc') {
   //     evt.preventDefault();
-  //     replacePopupToCard();
+  //     closePopup();
   //     document.removeEventListener('keydown', onEscKeyDown);
   //   }
   // };
   //
   // filmCardComponent.getElement().querySelector('.film-card__title').addEventListener('click', () => {
-  //   replaceCardToPopup();
+  //   openPopup();
   //   document.addEventListener('keydown', onEscKeyDown);
   // });
   // filmCardComponent.getElement().querySelector('.film-card__poster').addEventListener('click', () => {
-  //   replaceCardToPopup();
+  //   openPopup();
   //   document.addEventListener('keydown', onEscKeyDown);
   // });
   // filmCardComponent.getElement().querySelector('.film-card__comments').addEventListener('click', () => {
-  //   replaceCardToPopup();
+  //   openPopup();
   //   document.addEventListener('keydown', onEscKeyDown);
   // });
   //
-  // filmPopupComponent.getElement().querySelector('.film-details__close-btn').addEventListener('submit', (evt) => {
+  // popupElement.querySelector('.film-details__close-btn').addEventListener('submit', (evt) => {
   //   evt.preventDefault();
-  //   replacePopupToCard();
+  //   closePopup();
   //   document.addEventListener('keydown', onEscKeyDown);
   // });
   films.forEach((item, index) => {
