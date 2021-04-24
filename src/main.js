@@ -20,6 +20,7 @@ const COMMENTS_NUMBER = 4;
 //Массив объектов
 const films = new Array(15).fill().map(() => generateFilmCard());
 const filmPopupList = new Array(1).fill().map(() => generateFilmCard());
+const comments = new Array(10).fill().map(() => generateComment());
 const filters = generateFilters(films);
 
 const siteMainElement = document.querySelector('.main');
@@ -46,53 +47,42 @@ const siteFooterElement = document.querySelector('.footer');
 
 //Рендерит карточки фильмов i количество раз
 const renderCard = (n, place) => {
-  // const popupElement = new FilmPopupView(film).getElement();
-  // const filmCardElement = new FilmCardView(film).getElement();
-  // const posterBtn = filmCardElement.querySelector('.film-card__poster');
-  // const openPopup = () => {
-  //   document.querySelector('body').classList.add('hide-overflow');
-  //   siteMainElement.appendChild(popupElement);
-  // };
-  // const closePopup = () => {
-    // if(document.querySelector('body').classList.contains('hide-overflow')) {
-    //  document.querySelector('body').classList.remove('hide-overflow');
-    //};
-  //  siteFooter.removeChild(popupElement);
-  // };
-  // const onEscKeyDown = (evt) => {
-  //   if (evt.key === 'Escape' || evt.key === 'Esc') {
-  //     evt.preventDefault();
-  //     closePopup();
-  //     document.removeEventListener('keydown', onEscKeyDown);
-  //   }
-  // };
-  //
-  // filmCardComponent.getElement().querySelector('.film-card__title').addEventListener('click', () => {
-  //   openPopup();
-  //   document.addEventListener('keydown', onEscKeyDown);
-  // });
-  // filmCardComponent.getElement().querySelector('.film-card__poster').addEventListener('click', () => {
-  //   openPopup();
-  //   document.addEventListener('keydown', onEscKeyDown);
-  // });
-  // filmCardComponent.getElement().querySelector('.film-card__comments').addEventListener('click', () => {
-  //   openPopup();
-  //   document.addEventListener('keydown', onEscKeyDown);
-  // });
-  //
-  // popupElement.querySelector('.film-details__close-btn').addEventListener('submit', (evt) => {
-  //   evt.preventDefault();
-  //   closePopup();
-  //   document.addEventListener('keydown', onEscKeyDown);
-  // });
   films.forEach((item, index) => {
-    return index < n && renderTemplate(place, new FilmCardView(item).getTemplate(), RenderPosition.BEFOREEND);
+    const filmComponent = new FilmCardView(item);
+    const popupComponent = new FilmPopupView(item);
+    filmComponent.setClickPoster();
+    filmComponent.setClickTitle();
+    filmComponent.setClickComments();
+    popupComponent.setClickClosePopup();
+    //popupComponent.setClosePopupEsc();
+    index < n && render(place, filmComponent.getElement(), RenderPosition.BEFOREEND);
   });
+  if (siteFooterElement.getElementById('film-details')) {
+  //   const commentsList = popupElement.querySelector('.film-details__comments-list');
+  //   const renderComment = (n) => {
+  //   comments.forEach((item, index) => {
+  //     return index < n && render(commentsList, new CommentView(item).getElement(), RenderPosition.BEFOREEND);
+  //   });
+  //   };
+  // renderComment(COMMENTS_NUMBER);
+    console.log('yass');
+  }
 };
+  // const renderComment = (n) => {
+  //   comments.forEach((item, index) => {
+  //     const commentsList = new FilmPopupView().getElement().querySelector('.film-details__comments-list');
+  //     return index < n && render(commentsList, new CommentView(item).getElement(), RenderPosition.BEFOREEND);
+  //   });
+  //   };
+// const popupComponent = new FilmPopupView(item);
+
 
 renderCard(CARDS_NUMBER, movieListContainer);
 renderCard(MOST_COMMENTED, mostCommentedSectionContainer);
 renderCard(TOP_RATED, topRatedSectionContainer);
+
+// const one = new FilmPopupView(films[0]).getElement();
+// console.log(one.querySelector('.film-details__close-btn'));
 
 //Кнопка SHOW MORE
 
@@ -132,22 +122,14 @@ if (films.length > CARDS_NUMBER_PER_STEP) {
   });
 }
 
-
-//Рендерит попап с информацией о фильме
-//renderTemplate(siteFooterElement, new FilmPopupView(filmPopupList[0]), RenderPosition.BEFOREEND);
-
-render(siteFooterElement, new FilmPopupView(filmPopupList[0]).getElement(), RenderPosition.BEFOREEND);
-
-const popupElement = document.querySelector('.film-details');
+/**
+ const popupElement = document.querySelector('.film-details');
 const commentsList = popupElement.querySelector('.film-details__comments-list');
-
-//Рендерит комментарии фильмов i количество раз
-const comments = new Array(10).fill().map(() => generateComment());
 
 const renderComment = (n) => {
   comments.forEach((item, index) => {
-    return index < n && renderTemplate(commentsList, new CommentView(item).getTemplate(), RenderPosition.BEFOREEND)
-  })
+    return index < n && render(commentsList, new CommentView(item).getElement(), RenderPosition.BEFOREEND);
+  });
 };
 renderComment(COMMENTS_NUMBER);
-
+ */

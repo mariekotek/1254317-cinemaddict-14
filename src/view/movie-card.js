@@ -1,10 +1,13 @@
 import {createElement} from '../utils.js';
 import FilmPopupView from './info-popup.js';
 import {renderTemplate} from '../utils.js';
+import {render} from '../utils.js';
+import {RenderPosition} from '../utils.js';
+import CommentView from './comment';
 
 const createFilmCardTemplate = (film) => {
   const {poster, name, rate, year, duration, genre, description, comments} = film;
-  return ` <article class="film-card">
+  return `<article class="film-card">
           <h3 class="film-card__title">${name}</h3>
           <p class="film-card__rating">${rate}</p>
           <p class="film-card__info">
@@ -41,7 +44,9 @@ export default class FilmCard {
     return this._element;
   }
   openPopup() {
-    renderTemplate(document.querySelector('.footer'), new FilmPopupView(this._film));
+    render(document.querySelector('.footer'), new FilmPopupView(this._film).getElement(), RenderPosition.BEFOREEND);
+    document.querySelector('body').classList.add('hide-overflow');
+    //render(new FilmPopupView(this._film).getElement(), new CommentView(comments).getElement(), RenderPosition.BEFOREEND);
   }
 
   setClickPoster() {
