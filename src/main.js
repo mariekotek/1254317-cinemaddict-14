@@ -49,15 +49,13 @@ const siteFooterElement = document.querySelector('.footer');
 const renderCard = (n, place) => {
   films.forEach((item, index) => {
     const filmComponent = new FilmCardView(item);
-    const popupComponent = new FilmPopupView(item);
     filmComponent.setClickPoster();
     filmComponent.setClickTitle();
     filmComponent.setClickComments();
-    popupComponent.setClickClosePopup();
     //popupComponent.setClosePopupEsc();
     index < n && render(place, filmComponent.getElement(), RenderPosition.BEFOREEND);
   });
-  if (siteFooterElement.getElementById('film-details')) {
+  //if (siteFooterElement.getElementById('film-details')) {
   //   const commentsList = popupElement.querySelector('.film-details__comments-list');
   //   const renderComment = (n) => {
   //   comments.forEach((item, index) => {
@@ -65,8 +63,8 @@ const renderCard = (n, place) => {
   //   });
   //   };
   // renderComment(COMMENTS_NUMBER);
-    console.log('yass');
-  }
+    //console.log('yass');
+  //}
 };
   // const renderComment = (n) => {
   //   comments.forEach((item, index) => {

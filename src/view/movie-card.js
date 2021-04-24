@@ -44,7 +44,10 @@ export default class FilmCard {
     return this._element;
   }
   openPopup() {
-    render(document.querySelector('.footer'), new FilmPopupView(this._film).getElement(), RenderPosition.BEFOREEND);
+    const popupComponent = new FilmPopupView(this._film);
+    render(document.querySelector('.footer'), popupComponent.getElement(), RenderPosition.BEFOREEND);
+    popupComponent.setClickClosePopup();
+    popupComponent.setClosePopupEsc();
     document.querySelector('body').classList.add('hide-overflow');
     //render(new FilmPopupView(this._film).getElement(), new CommentView(comments).getElement(), RenderPosition.BEFOREEND);
   }

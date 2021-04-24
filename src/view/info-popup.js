@@ -127,22 +127,27 @@ export default class FilmPopup {
     this._element = null;
   }
 
+  hideElement() {
+    this._element.classList.add('hidden');
+    this._element = null;
+  }
+
   setClickClosePopup() {
-    this.getElement().querySelector('.film-details__close-btn').addEventListener('click', () => this.removeElement());
+    this.getElement().querySelector('.film-details__close-btn').addEventListener('click', () => this.hideElement());
       if(document.querySelector('body').classList.contains('hide-overflow')) {
       document.querySelector('body').classList.remove('hide-overflow');
     }
   }
 
   setClosePopupEsc() {
-    this.getElement().addEventListener('keydown', (evt) => {
+    const onEscKeyDown = (evt) => {
       if (evt && (evt.key === 'Escape' || evt.key === 'Esc')) {
         evt.preventDefault();
-        this.removeElement();
+        this.setClickClosePopup();
         if(document.querySelector('body').classList.contains('hide-overflow')) {
           document.querySelector('body').classList.remove('hide-overflow');
         }
       }
-    });
+    };
   }
 }
