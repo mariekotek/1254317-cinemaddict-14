@@ -1,4 +1,23 @@
 import {createElement} from '../utils.js';
+import {generateComment} from '../mock/comment-mock';
+const comments = new Array(4).fill().map(() => generateComment());
+const createCommentTemplate = (comments) => {
+// const {emotion, message, author, date} = comment;
+  return comments.map((comment) =>
+    `<li class="film-details__comment">
+        <span class="film-details__comment-emoji">
+          <img src="${comment.emotion}" width="55" height="55" alt="emoji-smile">
+        </span>
+        <div>
+          <p class="film-details__comment-text">${comment.message}</p>
+          <p class="film-details__comment-info">
+            <span class="film-details__comment-author">${comment.author}</span>
+            <span class="film-details__comment-day">${comment.date}</span>
+            <button class="film-details__comment-delete">Delete</button>
+          </p>
+        </div>
+      </li>`);
+};
 
 const createFilmPopup = (film) => {
   const {poster, age, name, originalName, rate, director, actors, writers, releaseDate, runtime, country, genre,
@@ -75,6 +94,7 @@ const createFilmPopup = (film) => {
       <section class="film-details__comments-wrap">
         <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">4</span></h3>
         <ul class="film-details__comments-list">
+        ${createCommentTemplate(comments)}
         </ul>
         <div class="film-details__new-comment">
           <div class="film-details__add-emoji-label"></div>
@@ -132,22 +152,22 @@ export default class FilmPopup {
     this._element = null;
   }
 
-  setClickClosePopup() {
-    this.getElement().querySelector('.film-details__close-btn').addEventListener('click', () => this.hideElement());
-      if(document.querySelector('body').classList.contains('hide-overflow')) {
-      document.querySelector('body').classList.remove('hide-overflow');
-    }
-  }
+  // setClickClosePopup() {
+  //   this.getElement().querySelector('.film-details__close-btn').addEventListener('click', () => this.hideElement());
+  //     if(document.querySelector('body').classList.contains('hide-overflow')) {
+  //     document.querySelector('body').classList.remove('hide-overflow');
+  //   }
+  // }
 
-  setClosePopupEsc() {
-    const onEscKeyDown = (evt) => {
-      if (evt && (evt.key === 'Escape' || evt.key === 'Esc')) {
-        evt.preventDefault();
-        this.setClickClosePopup();
-        if(document.querySelector('body').classList.contains('hide-overflow')) {
-          document.querySelector('body').classList.remove('hide-overflow');
-        }
-      }
-    };
-  }
+  // setClosePopupEsc() {
+  //   const onEscKeyDown = (evt) => {
+  //     if (evt && (evt.key === 'Escape' || evt.key === 'Esc')) {
+  //       evt.preventDefault();
+  //       this.setClickClosePopup();
+  //       if(document.querySelector('body').classList.contains('hide-overflow')) {
+  //         document.querySelector('body').classList.remove('hide-overflow');
+  //       }
+  //     }
+  //   };
+  // }
 }

@@ -1,9 +1,9 @@
 import {createElement} from '../utils.js';
-import FilmPopupView from './info-popup.js';
-import {renderTemplate} from '../utils.js';
-import {render} from '../utils.js';
-import {RenderPosition} from '../utils.js';
-import CommentView from './comment';
+// import FilmPopupView from './info-popup.js';
+// import {renderTemplate} from '../utils.js';
+// import {render} from '../utils.js';
+// import {RenderPosition} from '../utils.js';
+// import CommentView from './comment';
 
 const createFilmCardTemplate = (film) => {
   const {poster, name, rate, year, duration, genre, description, comments} = film;
@@ -43,14 +43,14 @@ export default class FilmCard {
 
     return this._element;
   }
-  openPopup() {
-    const popupComponent = new FilmPopupView(this._film);
-    render(document.querySelector('.footer'), popupComponent.getElement(), RenderPosition.BEFOREEND);
-    popupComponent.setClickClosePopup();
-    popupComponent.setClosePopupEsc();
-    document.querySelector('body').classList.add('hide-overflow');
-    //render(new FilmPopupView(this._film).getElement(), new CommentView(comments).getElement(), RenderPosition.BEFOREEND);
-  }
+  // openPopup() {
+  //   const popupComponent = new FilmPopupView(this._film);
+  //   render(document.querySelector('.footer'), popupComponent.getElement(), RenderPosition.BEFOREEND);
+  //   popupComponent.setClickClosePopup();
+  //   popupComponent.setClosePopupEsc();
+  //   document.querySelector('body').classList.add('hide-overflow');
+  //   //render(new FilmPopupView(this._film).getElement(), new CommentView(comments).getElement(), RenderPosition.BEFOREEND);
+  // }
 
   setClickPoster() {
     this.getElement().querySelector('.film-card__poster').addEventListener('click', () => this.openPopup());

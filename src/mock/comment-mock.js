@@ -38,3 +38,9 @@ export const generateComment = () => {
   };
 };
 
+const comments = [];
+for (let i = 0; i < 4; i++) {
+  comments.push(generateComment());
+}
+
+export {comments};

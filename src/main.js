@@ -5,23 +5,20 @@ import FilmCardView from './view/movie-card.js';
 import UserRankView from './view/user-rank.js';
 import ShowMoreButtonView from './view/show-more-btn.js';
 import FilmPopupView from './view/info-popup.js';
-import CommentView from './view/comment.js';
 import {generateFilmCard} from './mock/moviecard-mock.js';
-import {generateComment} from './mock/comment-mock.js';
-import {generateFilters} from './mock/main-menu-mock.js';
-import {renderTemplate, render, RenderPosition} from './utils.js';
+//import {generateComment, comments} from './mock/comment-mock.js';
+//import {generateFilters} from './mock/main-menu-mock.js';
+import {render, RenderPosition} from './utils.js';
 
 const CARDS_NUMBER = 5;
 const CARDS_NUMBER_PER_STEP = 4;
 const TOP_RATED = 2;
 const MOST_COMMENTED = 2;
-const COMMENTS_NUMBER = 4;
+//const COMMENTS_NUMBER = 4;
 
 //Массив объектов
 const films = new Array(15).fill().map(() => generateFilmCard());
-const filmPopupList = new Array(1).fill().map(() => generateFilmCard());
-const comments = new Array(10).fill().map(() => generateComment());
-const filters = generateFilters(films);
+//const filters = generateFilters(films);
 
 const siteMainElement = document.querySelector('.main');
 // Рендерит сортировку и фильтры
@@ -47,31 +44,65 @@ const siteFooterElement = document.querySelector('.footer');
 
 //Рендерит карточки фильмов i количество раз
 const renderCard = (n, place) => {
+
   films.forEach((item, index) => {
     const filmComponent = new FilmCardView(item);
-    filmComponent.setClickPoster();
-    filmComponent.setClickTitle();
-    filmComponent.setClickComments();
-    //popupComponent.setClosePopupEsc();
+    const popupComponent = new FilmPopupView(item);
+
+    const openPopup = () => {
+      document.querySelector('body').classList.add('hide-overflow');
+      document.addEventListener('keydown', onEscKeyDown);
+      render(siteFooterElement, popupComponent.getElement(), RenderPosition.BEFOREEND);
+    };
+
+    const closePopup = () => {
+      document.querySelector('body').classList.remove('hide-overflow');
+      document.removeEventListener('keydown', onEscKeyDown);
+      siteFooterElement.removeChild(popupComponent.getElement());
+    };
+
+    const onEscKeyDown = (evt) => {
+      if (evt && (evt.key === 'Escape' || evt.key === 'Esc')) {
+        evt.preventDefault();
+        closePopup();
+        document.removeEventListener('keydown', onEscKeyDown);
+      }
+    };
+
+    const setClosePopup = (selector) => {
+      popupComponent.getElement().querySelector(selector).addEventListener('click', () => closePopup());
+    };
+
+    const setOpenPopup = (selector) => {
+      filmComponent.getElement().querySelector(selector).addEventListener('click', () => openPopup());
+    };
+    setOpenPopup('.film-card__poster');
+    setOpenPopup('.film-card__title');
+    setOpenPopup('.film-card__comments');
+    setClosePopup('.film-details__close-btn');
+    onEscKeyDown();
     index < n && render(place, filmComponent.getElement(), RenderPosition.BEFOREEND);
   });
-  //if (siteFooterElement.getElementById('film-details')) {
-  //   const commentsList = popupElement.querySelector('.film-details__comments-list');
-  //   const renderComment = (n) => {
-  //   comments.forEach((item, index) => {
-  //     return index < n && render(commentsList, new CommentView(item).getElement(), RenderPosition.BEFOREEND);
-  //   });
-  //   };
-  // renderComment(COMMENTS_NUMBER);
-    //console.log('yass');
-  //}
 };
-  // const renderComment = (n) => {
-  //   comments.forEach((item, index) => {
-  //     const commentsList = new FilmPopupView().getElement().querySelector('.film-details__comments-list');
-  //     return index < n && render(commentsList, new CommentView(item).getElement(), RenderPosition.BEFOREEND);
-  //   });
-  //   };
+
+renderCard(CARDS_NUMBER, movieListContainer);
+renderCard(MOST_COMMENTED, mostCommentedSectionContainer);
+renderCard(TOP_RATED, topRatedSectionContainer);
+// const renderCard = (n, place) => {
+//   films.forEach((item, index) => {
+//     const filmComponent = new FilmCardView(item);
+//     filmComponent.setClickPoster();
+//     filmComponent.setClickTitle();
+//     filmComponent.setClickComments();
+//     //popupComponent.setClosePopupEsc();
+//     index < n && render(place, filmComponent.getElement(), RenderPosition.BEFOREEND);
+//   });
+// const renderComment = (n) => {
+//   comments.forEach((item, index) => {
+//     const commentsList = new FilmPopupView().getElement().querySelector('.film-details__comments-list');
+//     return index < n && render(commentsList, new CommentView(item).getElement(), RenderPosition.BEFOREEND);
+//   });
+//   };
 // const popupComponent = new FilmPopupView(item);
 
 
