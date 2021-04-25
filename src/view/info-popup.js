@@ -1,7 +1,28 @@
-export const createMovieInfoPopup = (popup) => {
+import {createElement} from '../utils.js';
+import {generateComment} from '../mock/comment-mock';
+const comments = new Array(4).fill().map(() => generateComment());
+const createCommentTemplate = (comments) => {
+// const {emotion, message, author, date} = comment;
+  return comments.map((comment) =>
+    `<li class="film-details__comment">
+        <span class="film-details__comment-emoji">
+          <img src="${comment.emotion}" width="55" height="55" alt="emoji-smile">
+        </span>
+        <div>
+          <p class="film-details__comment-text">${comment.message}</p>
+          <p class="film-details__comment-info">
+            <span class="film-details__comment-author">${comment.author}</span>
+            <span class="film-details__comment-day">${comment.date}</span>
+            <button class="film-details__comment-delete">Delete</button>
+          </p>
+        </div>
+      </li>`).join('');
+};
+
+const createFilmPopup = (film) => {
   const {poster, age, name, originalName, rate, director, actors, writers, releaseDate, runtime, country, genre,
-    description} = popup;
-  return `<section class="film-details">
+    description} = film;
+  return `<section class="film-details" id="film-details">
   <form class="film-details__inner" action="" method="get">
     <div class="film-details__top-container">
       <div class="film-details__close">
@@ -10,22 +31,18 @@ export const createMovieInfoPopup = (popup) => {
       <div class="film-details__info-wrap">
         <div class="film-details__poster">
           <img class="film-details__poster-img" src="${poster}" alt="">
-
           <p class="film-details__age">${age}</p>
         </div>
-
         <div class="film-details__info">
           <div class="film-details__info-head">
             <div class="film-details__title-wrap">
               <h3 class="film-details__title">${name}</h3>
               <p class="film-details__title-original">${originalName}</p>
             </div>
-
             <div class="film-details__rating">
               <p class="film-details__total-rating">${rate}</p>
             </div>
           </div>
-
           <table class="film-details__table">
             <tr class="film-details__row">
               <td class="film-details__term">Director</td>
@@ -59,55 +76,44 @@ export const createMovieInfoPopup = (popup) => {
                 <span class="film-details__genre">${genre}</span></td>
             </tr>
           </table>
-
           <p class="film-details__film-description">
             ${description}
           </p>
         </div>
       </div>
-
       <section class="film-details__controls">
         <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist">
         <label for="watchlist" class="film-details__control-label film-details__control-label--watchlist">Add to watchlist</label>
-
         <input type="checkbox" class="film-details__control-input visually-hidden" id="watched" name="watched">
         <label for="watched" class="film-details__control-label film-details__control-label--watched">Already watched</label>
-
         <input type="checkbox" class="film-details__control-input visually-hidden" id="favorite" name="favorite">
         <label for="favorite" class="film-details__control-label film-details__control-label--favorite">Add to favorites</label>
       </section>
     </div>
-
     <div class="film-details__bottom-container">
       <section class="film-details__comments-wrap">
         <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">4</span></h3>
         <ul class="film-details__comments-list">
-
+        ${createCommentTemplate(comments)}
         </ul>
-
         <div class="film-details__new-comment">
           <div class="film-details__add-emoji-label"></div>
-
           <label class="film-details__comment-label">
             <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment"></textarea>
           </label>
-
           <div class="film-details__emoji-list">
             <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-smile" value="smile">
             <label class="film-details__emoji-label" for="emoji-smile">
               <img src="./images/emoji/smile.png" width="30" height="30" alt="emoji">
             </label>
-
             <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-sleeping" value="sleeping">
             <label class="film-details__emoji-label" for="emoji-sleeping">
               <img src="./images/emoji/sleeping.png" width="30" height="30" alt="emoji">
             </label>
-
             <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-puke" value="puke">
             <label class="film-details__emoji-label" for="emoji-puke">
               <img src="./images/emoji/puke.png" width="30" height="30" alt="emoji">
             </label>
-
             <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-angry" value="angry">
             <label class="film-details__emoji-label" for="emoji-angry">
               <img src="./images/emoji/angry.png" width="30" height="30" alt="emoji">
@@ -119,3 +125,49 @@ export const createMovieInfoPopup = (popup) => {
   </form>
 </section>`;
 };
+
+export default class FilmPopup {
+  constructor(film) {
+    this._film = film;
+  }
+
+  getTemplate() {
+    return createFilmPopup(this._film);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+
+  hideElement() {
+    this._element.classList.add('hidden');
+    this._element = null;
+  }
+
+  // setClickClosePopup() {
+  //   this.getElement().querySelector('.film-details__close-btn').addEventListener('click', () => this.hideElement());
+  //     if(document.querySelector('body').classList.contains('hide-overflow')) {
+  //     document.querySelector('body').classList.remove('hide-overflow');
+  //   }
+  // }
+
+  // setClosePopupEsc() {
+  //   const onEscKeyDown = (evt) => {
+  //     if (evt && (evt.key === 'Escape' || evt.key === 'Esc')) {
+  //       evt.preventDefault();
+  //       this.setClickClosePopup();
+  //       if(document.querySelector('body').classList.contains('hide-overflow')) {
+  //         document.querySelector('body').classList.remove('hide-overflow');
+  //       }
+  //     }
+  //   };
+  // }
+}

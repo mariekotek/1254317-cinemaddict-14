@@ -1,26 +1,13 @@
-export const createMovieList = () => {
-  return ` <section class="films">
-               <section class="films-list">
-                    <h2 class="films-list__title visually-hidden">All movies. Upcoming</h2>
-                    <div class="films-list__container">
-                    </div>
-               </section>
-               <section class="films-list films-list--extra films-list__top-rated">
-                    <h2 class="films-list__title">Top rated</h2>
-                    <div class="films-list__container">
-                    </div>
-               </section>
-               <section class="films-list films-list--extra films-list__most-commented">
-                    <h2 class="films-list__title">Most commented</h2>
-                    <div class="films-list__container">
-                    </div>
-               </section>
-            </section> `;
-};
+import {createElement} from '../utils.js';
+// import FilmPopupView from './info-popup.js';
+// import {renderTemplate} from '../utils.js';
+// import {render} from '../utils.js';
+// import {RenderPosition} from '../utils.js';
+// import CommentView from './comment';
 
-export const createMovieCardTemplate = (movie) => {
-  const {poster, name, rate, year, duration, genre, description, comments} = movie;
-  return ` <article class="film-card">
+const createFilmCardTemplate = (film) => {
+  const {poster, name, rate, year, duration, genre, description, comments} = film;
+  return `<article class="film-card">
           <h3 class="film-card__title">${name}</h3>
           <p class="film-card__rating">${rate}</p>
           <p class="film-card__info">
@@ -38,3 +25,46 @@ export const createMovieCardTemplate = (movie) => {
           </div>
         </article>`;
 };
+
+export default class FilmCard {
+  constructor(film) {
+    this._element = null;
+    this._film = film;
+  }
+
+  getTemplate() {
+    return createFilmCardTemplate(this._film);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+  // openPopup() {
+  //   const popupComponent = new FilmPopupView(this._film);
+  //   render(document.querySelector('.footer'), popupComponent.getElement(), RenderPosition.BEFOREEND);
+  //   popupComponent.setClickClosePopup();
+  //   popupComponent.setClosePopupEsc();
+  //   document.querySelector('body').classList.add('hide-overflow');
+  //   //render(new FilmPopupView(this._film).getElement(), new CommentView(comments).getElement(), RenderPosition.BEFOREEND);
+  // }
+
+  setClickPoster() {
+    this.getElement().querySelector('.film-card__poster').addEventListener('click', () => this.openPopup());
+  }
+
+  setClickTitle() {
+    this.getElement().querySelector('.film-card__title').addEventListener('click', () => this.openPopup());
+  }
+
+  setClickComments() {
+    this.getElement().querySelector('.film-card__comments').addEventListener('click', () => this.openPopup());
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

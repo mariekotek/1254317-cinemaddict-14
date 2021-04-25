@@ -62,7 +62,7 @@ const descriptions = [
   'In this short, Sindbad the Sailor (presumably Bluto playing a "role") proclaims himself, in song, to be the greatest sailor, adventurer and…',
 ];
 
-export const generateMovieCard = () => {
+export const generateFilmCard = () => {
   return {
     poster: generateRandom(posters),
     age: generateRandom(ages),
