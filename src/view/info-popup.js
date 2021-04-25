@@ -16,7 +16,7 @@ const createCommentTemplate = (comments) => {
             <button class="film-details__comment-delete">Delete</button>
           </p>
         </div>
-      </li>`);
+      </li>`).join('');
 };
 
 const createFilmPopup = (film) => {
