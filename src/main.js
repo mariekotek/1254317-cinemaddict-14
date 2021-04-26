@@ -15,6 +15,7 @@ const CARDS_NUMBER = 5;
 const CARDS_NUMBER_PER_STEP = 4;
 const TOP_RATED = 2;
 const MOST_COMMENTED = 2;
+const CARD = 1;
 //const COMMENTS_NUMBER = 4;
 
 //Массив объектов
@@ -72,17 +73,19 @@ const renderCard = (n, place) => {
         }
       };
 
-      const setClosePopup = (selector) => {
-        popupComponent.getElement().querySelector(selector).addEventListener('click', () => closePopup());
+      const setClosePopup = () => {
+        popupComponent.setEditClickHandler(() => {
+          closePopup();
+        });
       };
 
-      const setOpenPopup = (selector) => {
-        filmComponent.getElement().querySelector(selector).addEventListener('click', () => openPopup());
+      const setOpenPopup = () => {
+        filmComponent.setEditClickHandler(() => {
+          openPopup();
+        });
       };
-      setOpenPopup('.film-card__poster');
-      setOpenPopup('.film-card__title');
-      setOpenPopup('.film-card__comments');
-      setClosePopup('.film-details__close-btn');
+      setOpenPopup();
+      setClosePopup();
       onEscKeyDown();
       index < n && render(place, filmComponent.getElement(), RenderPosition.BEFOREEND);
 
@@ -136,26 +139,26 @@ if (films.length > CARDS_NUMBER_PER_STEP) {
   showMoreButton.addEventListener('click', onShowMoreButtonClick);
 }
 **/
+// if (films.length > CARDS_NUMBER_PER_STEP) {
+//   const showMoreButton = new ShowMoreButtonView();
+//   render(movieListContainer, showMoreButton.getElement(), RenderPosition.BEFOREEND);
+//
+//   showMoreButton.setClickHandler(() => {
+//     alert('Works!');
+//   });
+// }
 
 if (films.length > CARDS_NUMBER_PER_STEP) {
-  render(movieListContainer, new ShowMoreButtonView().getElement(), RenderPosition.BEFOREEND);
-
-  const showMoreButton = movieListContainer.querySelector('.films-list__show-more');
-
-  showMoreButton.addEventListener('click', (evt) => {
-    evt.preventDefault();
-    alert('Works!');
+  let renderedFilmCount = CARDS_NUMBER_PER_STEP;
+  const showMoreButton = new ShowMoreButtonView();
+  render(movieListContainer, showMoreButton.getElement(), RenderPosition.BEFOREEND);
+  showMoreButton.setClickHandler(() => {
+    films
+      .slice(renderedFilmCount, renderedFilmCount + CARDS_NUMBER_PER_STEP)
+      .forEach(() => renderCard(CARD, movieListContainer));
+    renderedFilmCount += CARDS_NUMBER_PER_STEP;
+    if (renderedFilmCount >= films.length) {
+      showMoreButton.removeElement();
+    }
   });
 }
-
-/**
- const popupElement = document.querySelector('.film-details');
-const commentsList = popupElement.querySelector('.film-details__comments-list');
-
-const renderComment = (n) => {
-  comments.forEach((item, index) => {
-    return index < n && render(commentsList, new CommentView(item).getElement(), RenderPosition.BEFOREEND);
-  });
-};
-renderComment(COMMENTS_NUMBER);
- */

@@ -30,20 +30,32 @@ export default class FilmCard extends AbstractView {
   constructor(film) {
     super();
     this._film = film;
+    this._editClickHandler = this._editClickHandler.bind(this);
   }
 
   getTemplate() {
     return createFilmCardTemplate(this._film);
   }
-  // openPopup() {
-  //   const popupComponent = new FilmPopupView(this._film);
-  //   render(document.querySelector('.footer'), popupComponent.getElement(), RenderPosition.BEFOREEND);
-  //   popupComponent.setClickClosePopup();
-  //   popupComponent.setClosePopupEsc();
-  //   document.querySelector('body').classList.add('hide-overflow');
-  //   //render(new FilmPopupView(this._film).getElement(), new CommentView(comments).getElement(), RenderPosition.BEFOREEND);
-  // }
 
+  _editClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.editClick();
+  }
+
+  setEditClickHandler(callback) {
+    this._callback.editClick = callback;
+    this.getElement().querySelector('.film-card__poster').addEventListener('click', this._editClickHandler);
+    this.getElement().querySelector('.film-card__title').addEventListener('click', this._editClickHandler);
+    this.getElement().querySelector('.film-card__comments').addEventListener('click', this._editClickHandler);
+  }
+/**  openPopup() {
+    const popupComponent = new FilmPopupView(this._film);
+    render(document.querySelector('.footer'), popupComponent.getElement(), RenderPosition.BEFOREEND);
+    popupComponent.setClickClosePopup();
+    popupComponent.setClosePopupEsc();
+    document.querySelector('body').classList.add('hide-overflow');
+    //render(new FilmPopupView(this._film).getElement(), new CommentView(comments).getElement(), RenderPosition.BEFOREEND);
+  }
   setClickPoster() {
     this.getElement().querySelector('.film-card__poster').addEventListener('click', () => this.openPopup());
   }
@@ -54,5 +66,5 @@ export default class FilmCard extends AbstractView {
 
   setClickComments() {
     this.getElement().querySelector('.film-card__comments').addEventListener('click', () => this.openPopup());
-  }
+  }*/
 }
