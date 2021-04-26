@@ -6,10 +6,9 @@ import UserRankView from './view/user-rank.js';
 import ShowMoreButtonView from './view/show-more-btn.js';
 import FilmPopupView from './view/info-popup.js';
 import {generateFilmCard} from './mock/moviecard-mock.js';
-//import {generateComment, comments} from './mock/comment-mock.js';
 //import {generateFilters} from './mock/main-menu-mock.js';
 import NoFilmsView from './view/films-list-empty.js';
-import {render, RenderPosition} from './utils.js';
+import {render, RenderPosition} from './utils/render.js';
 
 const CARDS_NUMBER = 5;
 const CARDS_NUMBER_PER_STEP = 4;

@@ -1,9 +1,4 @@
 import AbstractView from './abstract.js';
-// import FilmPopupView from './info-popup.js';
-// import {renderTemplate} from '../utils.js';
-// import {render} from '../utils.js';
-// import {RenderPosition} from '../utils.js';
-// import CommentView from './comment';
 
 const createFilmCardTemplate = (film) => {
   const {poster, name, rate, year, duration, genre, description, comments} = film;

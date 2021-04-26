@@ -1,4 +1,4 @@
-import {generateRandom} from '../utils.js';
+import {generateRandom} from '../utils/get_random.js';
 
 //данные для комментариев
 
