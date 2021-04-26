@@ -1,4 +1,4 @@
-import {createElement} from '../utils.js';
+import AbstractView from './abstract.js';
 // import FilmPopupView from './info-popup.js';
 // import {renderTemplate} from '../utils.js';
 // import {render} from '../utils.js';
@@ -26,22 +26,14 @@ const createFilmCardTemplate = (film) => {
         </article>`;
 };
 
-export default class FilmCard {
+export default class FilmCard extends AbstractView {
   constructor(film) {
-    this._element = null;
+    super();
     this._film = film;
   }
 
   getTemplate() {
     return createFilmCardTemplate(this._film);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
   }
   // openPopup() {
   //   const popupComponent = new FilmPopupView(this._film);
@@ -62,9 +54,5 @@ export default class FilmCard {
 
   setClickComments() {
     this.getElement().querySelector('.film-card__comments').addEventListener('click', () => this.openPopup());
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

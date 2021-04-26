@@ -1,5 +1,6 @@
-import {createElement} from '../utils.js';
 import {generateComment} from '../mock/comment-mock';
+import AbstractView from './abstract.js';
+
 const comments = new Array(4).fill().map(() => generateComment());
 const createCommentTemplate = (comments) => {
 // const {emotion, message, author, date} = comment;
@@ -126,25 +127,14 @@ const createFilmPopup = (film) => {
 </section>`;
 };
 
-export default class FilmPopup {
+export default class FilmPopup extends AbstractView {
   constructor(film) {
+    super();
     this._film = film;
   }
 
   getTemplate() {
     return createFilmPopup(this._film);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 
   hideElement() {
