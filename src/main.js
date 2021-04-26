@@ -8,6 +8,7 @@ import FilmPopupView from './view/info-popup.js';
 import {generateFilmCard} from './mock/moviecard-mock.js';
 //import {generateComment, comments} from './mock/comment-mock.js';
 //import {generateFilters} from './mock/main-menu-mock.js';
+import NoFilmsView from './view/films-list-empty.js';
 import {render, RenderPosition} from './utils.js';
 
 const CARDS_NUMBER = 5;
@@ -44,45 +45,49 @@ const siteFooterElement = document.querySelector('.footer');
 
 //Рендерит карточки фильмов i количество раз
 const renderCard = (n, place) => {
+  if (films.length === 0) {
+    render(place, new NoFilmsView().getElement(), RenderPosition.BEFOREEND);
+  } else {
+    films.forEach((item, index) => {
+      const filmComponent = new FilmCardView(item);
+      const popupComponent = new FilmPopupView(item);
 
-  films.forEach((item, index) => {
-    const filmComponent = new FilmCardView(item);
-    const popupComponent = new FilmPopupView(item);
+      const openPopup = () => {
+        document.querySelector('body').classList.add('hide-overflow');
+        document.addEventListener('keydown', onEscKeyDown);
+        render(siteFooterElement, popupComponent.getElement(), RenderPosition.BEFOREEND);
+      };
 
-    const openPopup = () => {
-      document.querySelector('body').classList.add('hide-overflow');
-      document.addEventListener('keydown', onEscKeyDown);
-      render(siteFooterElement, popupComponent.getElement(), RenderPosition.BEFOREEND);
-    };
-
-    const closePopup = () => {
-      document.querySelector('body').classList.remove('hide-overflow');
-      document.removeEventListener('keydown', onEscKeyDown);
-      siteFooterElement.removeChild(popupComponent.getElement());
-    };
-
-    const onEscKeyDown = (evt) => {
-      if (evt && (evt.key === 'Escape' || evt.key === 'Esc')) {
-        evt.preventDefault();
-        closePopup();
+      const closePopup = () => {
+        document.querySelector('body').classList.remove('hide-overflow');
         document.removeEventListener('keydown', onEscKeyDown);
-      }
-    };
+        siteFooterElement.removeChild(popupComponent.getElement());
+      };
 
-    const setClosePopup = (selector) => {
-      popupComponent.getElement().querySelector(selector).addEventListener('click', () => closePopup());
-    };
+      const onEscKeyDown = (evt) => {
+        if (evt && (evt.key === 'Escape' || evt.key === 'Esc')) {
+          evt.preventDefault();
+          closePopup();
+          document.removeEventListener('keydown', onEscKeyDown);
+        }
+      };
 
-    const setOpenPopup = (selector) => {
-      filmComponent.getElement().querySelector(selector).addEventListener('click', () => openPopup());
-    };
-    setOpenPopup('.film-card__poster');
-    setOpenPopup('.film-card__title');
-    setOpenPopup('.film-card__comments');
-    setClosePopup('.film-details__close-btn');
-    onEscKeyDown();
-    index < n && render(place, filmComponent.getElement(), RenderPosition.BEFOREEND);
-  });
+      const setClosePopup = (selector) => {
+        popupComponent.getElement().querySelector(selector).addEventListener('click', () => closePopup());
+      };
+
+      const setOpenPopup = (selector) => {
+        filmComponent.getElement().querySelector(selector).addEventListener('click', () => openPopup());
+      };
+      setOpenPopup('.film-card__poster');
+      setOpenPopup('.film-card__title');
+      setOpenPopup('.film-card__comments');
+      setClosePopup('.film-details__close-btn');
+      onEscKeyDown();
+      index < n && render(place, filmComponent.getElement(), RenderPosition.BEFOREEND);
+
+    });
+  }
 };
 
 renderCard(CARDS_NUMBER, movieListContainer);
@@ -104,14 +109,6 @@ renderCard(TOP_RATED, topRatedSectionContainer);
 //   });
 //   };
 // const popupComponent = new FilmPopupView(item);
-
-
-renderCard(CARDS_NUMBER, movieListContainer);
-renderCard(MOST_COMMENTED, mostCommentedSectionContainer);
-renderCard(TOP_RATED, topRatedSectionContainer);
-
-// const one = new FilmPopupView(films[0]).getElement();
-// console.log(one.querySelector('.film-details__close-btn'));
 
 //Кнопка SHOW MORE
 
