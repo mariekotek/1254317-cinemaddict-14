@@ -1,5 +1,6 @@
-import {createElement} from '../utils.js';
 import {generateComment} from '../mock/comment-mock';
+import AbstractView from './abstract.js';
+
 const comments = new Array(4).fill().map(() => generateComment());
 const createCommentTemplate = (comments) => {
 // const {emotion, message, author, date} = comment;
@@ -126,32 +127,31 @@ const createFilmPopup = (film) => {
 </section>`;
 };
 
-export default class FilmPopup {
+export default class FilmPopup extends AbstractView {
   constructor(film) {
+    super();
     this._film = film;
+    this._editClickHandler = this._editClickHandler.bind(this);
   }
 
   getTemplate() {
     return createFilmPopup(this._film);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
+  _editClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.editClick();
   }
 
-  removeElement() {
-    this._element = null;
+  setEditClickHandler(callback) {
+    this._callback.editClick = callback;
+    this.getElement().querySelector('.film-details__close-btn').addEventListener('click', this._editClickHandler);
   }
 
-  hideElement() {
-    this._element.classList.add('hidden');
-    this._element = null;
-  }
-
+  // hideElement() {
+  //   this._element.classList.add('hidden');
+  //   this._element = null;
+  // }
   // setClickClosePopup() {
   //   this.getElement().querySelector('.film-details__close-btn').addEventListener('click', () => this.hideElement());
   //     if(document.querySelector('body').classList.contains('hide-overflow')) {

@@ -1,6 +1,6 @@
-import {getRandomInteger} from '../utils.js';
-import {generateRandom} from '../utils.js';
-import {getRandomNumber} from '../utils.js';
+import {getRandomInteger} from '../utils/get_random.js';
+import {generateRandom} from '../utils/get_random.js';
+import {getRandomNumber} from '../utils/get_random.js';
 
 // Данные-информация о фильмах
 
