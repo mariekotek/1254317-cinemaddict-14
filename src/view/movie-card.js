@@ -1,13 +1,13 @@
 import AbstractView from './abstract.js';
 
 const createFilmCardTemplate = (film) => {
-  const {poster, name, rate, year, duration, genre, description, comments} = film;
+  const {poster, name, rate, year, runtime, genre, description, comments} = film;
   return `<article class="film-card">
           <h3 class="film-card__title">${name}</h3>
           <p class="film-card__rating">${rate}</p>
           <p class="film-card__info">
             <span class="film-card__year">${year}</span>
-            <span class="film-card__duration">${duration}</span>
+            <span class="film-card__duration">${runtime}</span>
             <span class="film-card__genre">${genre}</span>
           </p>
           <img src="${poster}" alt="" class="film-card__poster">

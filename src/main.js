@@ -11,6 +11,7 @@ import NoFilmsView from './view/films-list-empty.js';
 import {render, RenderPosition} from './utils/render.js';
 
 import MovieListView from './presenter/movie-list.js';
+import MovieView from './presenter/movie.js';
 
 const CARDS_NUMBER = 5;
 const CARDS_NUMBER_PER_STEP = 4;
@@ -23,12 +24,14 @@ const CARD = 1;
 const films = new Array(15).fill().map(() => generateFilmCard());
 //const filters = generateFilters(films);
 
+const siteHeaderElement = document.querySelector('.header');
 const siteMainElement = document.querySelector('.main');
+const siteFooterElement = document.querySelector('.footer');
+
 // // Рендерит сортировку и фильтры
 // render(siteMainElement, new MainMenuView().getElement(), RenderPosition.BEFOREEND);
 // render(siteMainElement, new MainSortView().getElement(), RenderPosition.BEFOREEND);
 //
-// const siteHeaderElement = document.querySelector('.header');
 // //Рендерит аватар и звание пользователя
 // render(siteHeaderElement, new UserRankView().getElement(), RenderPosition.BEFOREEND);
 //
@@ -38,13 +41,13 @@ const siteMainElement = document.querySelector('.main');
 //
 //Секции/контейнеры
 const filmsSection = siteMainElement.querySelector('.films');
-// const movieListContainer = filmsSection.querySelector('.films-list__container');
+//const movieListContainer = filmsSection.querySelector('.films-list__container');
 // const mostCommentedSection = filmsSection.querySelector('.films-list__most-commented');
 // const mostCommentedSectionContainer = mostCommentedSection.querySelector('.films-list__container');
 // const topRatedSection = filmsSection.querySelector('.films-list__top-rated');
 // const topRatedSectionContainer = topRatedSection.querySelector('.films-list__container');
-// const siteFooterElement = document.querySelector('.footer');
-//
+
+
 // //Рендерит карточки фильмов i количество раз
 // const renderCard = (n, place) => {
 //   if (films.length === 0) {
@@ -124,5 +127,5 @@ const filmsSection = siteMainElement.querySelector('.films');
 //   });
 // }
 
-const movieList = new MovieListView(siteMainElement);
+const movieList = new MovieListView(siteMainElement, siteHeaderElement);
 movieList.init(films);
