@@ -6,10 +6,10 @@ import FilmCardView from '../view/movie-card.js';
 import FilmPopupView from '../view/info-popup.js';
 import UserRankView from '../view/user-rank.js';
 import ShowMoreButtonView from '../view/show-more-btn.js';
-import MovieView from './movie.js';
+import MoviePresenter from './movie.js';
 
 import {render, RenderPosition, remove} from '../utils/render';
-import {generateFilmCard} from "../mock/moviecard-mock";
+import {generateFilmCard} from '../mock/moviecard-mock';
 
 const CARDS_NUMBER_PER_STEP = 4;
 const films = new Array(15).fill().map(() => generateFilmCard());
@@ -55,12 +55,12 @@ export default class MovieList {
   }
 
   _renderNoFilms() {
-    const movieComponent = new MovieView();
-    movieComponent.init(film, comments);
+    render(this._movieBoardComponent, this._noFilmsComponent, RenderPosition.AFTERBEGIN);
   }
 
-    _renderCard(film) {
-    render(this._movieBoardComponent, new FilmCardView(film).getElement(), RenderPosition.AFTERBEGIN);
+  _renderCard(film) {
+    const moviePresenter = new MoviePresenter(this._movieBoardComponent);
+    moviePresenter.init(film);
   }
 
   _renderCards() {
@@ -77,20 +77,20 @@ export default class MovieList {
     }
   }
 
-    _renderShowMoreButton() {
+  _renderShowMoreButton() {
     render(this._movieListContainer, this._showMoreBtn.getElement(), RenderPosition.BEFOREEND);
     this._showMoreBtn.setClickHandler(this._handleShowMoreButtonClick);
   }
 
-   _renderBoard() {
-  if (this._films.length === 0) {
-    this._renderNoFilms();
-    return;
-  }
-  this._renderUserRank();
-  this._renderSort();
-  this._renderMainMenu();
-  this._renderShowMoreButton();
-  this._renderCards();
+  _renderBoard() {
+    this._renderUserRank();
+    this._renderSort();
+    this._renderMainMenu();
+    if (this._films.length === 0) {
+      this._renderNoFilms();
+      return;
+    }
+    this._renderShowMoreButton();
+    this._renderCards();
   }
 }

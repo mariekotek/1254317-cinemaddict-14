@@ -10,7 +10,7 @@ import {generateFilmCard} from './mock/moviecard-mock.js';
 import NoFilmsView from './view/films-list-empty.js';
 import {render, RenderPosition} from './utils/render.js';
 
-import MovieListView from './presenter/movie-list.js';
+import MovieListPresenter from './presenter/movie-list.js';
 import MovieView from './presenter/movie.js';
 
 const CARDS_NUMBER = 5;
@@ -127,5 +127,5 @@ const filmsSection = siteMainElement.querySelector('.films');
 //   });
 // }
 
-const movieList = new MovieListView(siteMainElement, siteHeaderElement);
-movieList.init(films);
+const movieListPresenter = new MovieListPresenter(siteMainElement, siteHeaderElement);
+movieListPresenter.init(films);
