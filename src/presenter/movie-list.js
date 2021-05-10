@@ -8,7 +8,8 @@ import UserRankView from '../view/user-rank.js';
 import ShowMoreButtonView from '../view/show-more-btn.js';
 import MoviePresenter from './movie.js';
 
-import {render, RenderPosition, remove} from '../utils/render';
+import {render, RenderPosition, remove} from '../utils/render.js';
+import {updateItem} from '../utils/create_element.js';
 import {generateFilmCard} from '../mock/moviecard-mock';
 
 const CARDS_NUMBER_PER_STEP = 4;
@@ -42,6 +43,10 @@ export default class MovieList {
     this._renderBoard();
   }
 
+  _closePopups() {
+    document.querySelectorAll('.film-details').forEach((el) => el.remove());
+  }
+
   _renderMainMenu() {
     render(this._siteMainElement, this._mainMenuComponent, RenderPosition.AFTERBEGIN);
   }
@@ -59,7 +64,7 @@ export default class MovieList {
   }
 
   _renderCard(film) {
-    const moviePresenter = new MoviePresenter(this._movieBoardComponent);
+    const moviePresenter = new MoviePresenter(this._movieBoardComponent, this._closePopups);
     moviePresenter.init(film);
   }
 

@@ -1,3 +1,5 @@
+import AbstractView from '../view/abstract.js';
+
 // Вставляет HTML-код в указанное место
 export const renderTemplate = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
