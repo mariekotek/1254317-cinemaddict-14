@@ -1,23 +1,9 @@
-import MainMenuView from './view/main-menu.js';
-import MainSortView from './view/main-sort.js';
-import MovieBoardView from './view/movie-board.js';
-import FilmCardView from './view/movie-card.js';
-import UserRankView from './view/user-rank.js';
-import ShowMoreButtonView from './view/show-more-btn.js';
-import FilmPopupView from './view/info-popup.js';
 import {generateFilmCard} from './mock/moviecard-mock.js';
-//import {generateFilters} from './mock/main-menu-mock.js';
-import NoFilmsView from './view/films-list-empty.js';
-import {render, RenderPosition} from './utils/render.js';
-
 import MovieListPresenter from './presenter/movie-list.js';
-import MovieView from './presenter/movie.js';
 
-const CARDS_NUMBER = 5;
-const CARDS_NUMBER_PER_STEP = 4;
-const TOP_RATED = 2;
-const MOST_COMMENTED = 2;
-const CARD = 1;
+// const CARDS_NUMBER = 5;
+// const TOP_RATED = 2;
+// const MOST_COMMENTED = 2;
 //const COMMENTS_NUMBER = 4;
 
 //Массив объектов
@@ -26,7 +12,7 @@ const films = new Array(15).fill().map(() => generateFilmCard());
 
 const siteHeaderElement = document.querySelector('.header');
 const siteMainElement = document.querySelector('.main');
-const siteFooterElement = document.querySelector('.footer');
+// const siteFooterElement = document.querySelector('.footer');
 
 // // Рендерит сортировку и фильтры
 // render(siteMainElement, new MainMenuView().getElement(), RenderPosition.BEFOREEND);
@@ -40,7 +26,7 @@ const siteFooterElement = document.querySelector('.footer');
 // render(siteMainElement, movieBoardComponent.getElement(), RenderPosition.BEFOREEND);
 //
 //Секции/контейнеры
-const filmsSection = siteMainElement.querySelector('.films');
+//const filmsSection = siteMainElement.querySelector('.films');
 //const movieListContainer = filmsSection.querySelector('.films-list__container');
 // const mostCommentedSection = filmsSection.querySelector('.films-list__most-commented');
 // const mostCommentedSectionContainer = mostCommentedSection.querySelector('.films-list__container');

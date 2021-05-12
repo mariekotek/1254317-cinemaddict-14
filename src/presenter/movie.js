@@ -1,8 +1,8 @@
 import FilmCardView from '../view/movie-card.js';
 import FilmPopupView from '../view/info-popup.js';
 
-import {render, RenderPosition, remove} from '../utils/render';
-import {generateFilmCard} from '../mock/moviecard-mock';
+import {render, RenderPosition, remove, onEscKeyDown} from '../utils/render';
+//import {generateFilmCard} from '../mock/moviecard-mock';
 
 const Mode = {
   CARD: 'CARD',
@@ -15,9 +15,9 @@ export default class Movie {
     this._closePopupsCallback = closePopupsCallback;
     this._changeMode = changeMode;
 
-    const films = new Array(15).fill().map(() => generateFilmCard());
-    this._filmCardComponent = null;
-    this._popupComponent = null;
+    // const films = new Array(15).fill().map(() => generateFilmCard());
+    // this._filmCardComponent = null;
+    // this._popupComponent = null;
     this._mode = Mode.CARD;
 
     this._handleOpenPopupClick = this._handleOpenPopupClick.bind(this);
@@ -32,8 +32,8 @@ export default class Movie {
     this._film = film;
     this._comments = comments;
 
-    const prevFilmCardComponent = this._filmCardComponent;
-    const prevPopupComponent = this._popupComponent;
+    // const prevFilmCardComponent = this._filmCardComponent;
+    // const prevPopupComponent = this._popupComponent;
 
     this._filmCardComponent = new FilmCardView(film);
     this._popupComponent = new FilmPopupView(film, this._comments);

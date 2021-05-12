@@ -26,7 +26,7 @@ export const remove = (component) => {
     return;
   }
 
-  if (!(component instanceof Abstract)) {
+  if (!(component instanceof AbstractView)) {
     throw new Error('Can remove only components');
   }
 
@@ -35,11 +35,11 @@ export const remove = (component) => {
 };
 
 export const replace = (newChild, oldChild) => {
-  if (oldChild instanceof Abstract) {
+  if (oldChild instanceof AbstractView) {
     oldChild = oldChild.getElement();
   }
 
-  if (newChild instanceof Abstract) {
+  if (newChild instanceof AbstractView) {
     newChild = newChild.getElement();
   }
 
@@ -50,4 +50,11 @@ export const replace = (newChild, oldChild) => {
   }
 
   parent.replaceChild(newChild, oldChild);
+};
+
+export const onEscKeyDown = (evt, func) => {
+  if (evt.key === 'Escape' || evt.key === 'Esc') {
+    evt.preventDefault();
+    func();
+  }
 };

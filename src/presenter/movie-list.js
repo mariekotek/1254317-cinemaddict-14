@@ -7,9 +7,10 @@ import FilmPopupView from '../view/info-popup.js';
 import UserRankView from '../view/user-rank.js';
 import ShowMoreButtonView from '../view/show-more-btn.js';
 import MoviePresenter from './movie.js';
+import {SortType, sortFilmsDate, sortFilmsRank} from '../utils/sort.js';
 
 import {render, RenderPosition, remove} from '../utils/render.js';
-import {updateItem} from '../utils/create_element.js';
+// import {updateItem} from '../utils/create_element.js';
 import {generateFilmCard} from '../mock/moviecard-mock';
 
 const CARDS_NUMBER_PER_STEP = 4;
@@ -21,7 +22,9 @@ export default class MovieList {
     this._siteHeaderElement = siteHeaderElement;
 
     this._renderedFilmCount = CARDS_NUMBER_PER_STEP;
+    this._currentSortType = SortType.DEFAULT;
     this._films = films;
+    this._moviePresenter = new MoviePresenter(this._movieBoardComponent, this._closePopups);
 
     this._mainMenuComponent = new MainMenuView().getElement();
     this._mainSortComponent = new MainSortView().getElement();
@@ -35,12 +38,48 @@ export default class MovieList {
     this._movieListContainer = this._movieBoardComponent.querySelector('.films-list');
 
     this._handleShowMoreButtonClick = this._handleShowMoreButtonClick.bind(this);
+    this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
   }
 
   init(films) {
     this._films = films.slice();
+    this._sourcedFilms = films.slice();
     render(this._siteMainElement, this._movieBoardComponent, RenderPosition.AFTERBEGIN);
     this._renderBoard();
+  }
+
+  _sortFilms(sortType) {
+    switch (sortType) {
+      case SortType.DATE:
+        this._films.sort(sortFilmsDate);
+        break;
+      case SortType.RATING:
+        this._films.sort(sortFilmsRank);
+        break;
+      default:
+        this._films = this._sourcedFilms.slice();
+    }
+
+    this._currentSortType = sortType;
+  }
+
+  _clearFilms() {
+    Object
+      .values(this._moviePresenter)
+      .forEach((presenter) => presenter.destroy());
+    this._moviePresenter = {};
+    this._renderedFilmCount = CARDS_NUMBER_PER_STEP;
+    remove(this._showMoreBtn);
+  }
+
+
+  _handleSortTypeChange(sortType) {
+    if (this._currentSortType === sortType) {
+      return;
+    }
+    this._sortFilms(sortType);
+    this._clearFilms();
+    this._renderCards();
   }
 
   _closePopups() {
@@ -53,6 +92,7 @@ export default class MovieList {
 
   _renderSort() {
     render(this._siteMainElement, this._mainSortComponent, RenderPosition.AFTERBEGIN);
+    //this._mainSortComponent.setSortTypeChangeHandler(this._handleSortTypeChange);
   }
 
   _renderUserRank() {
@@ -64,8 +104,8 @@ export default class MovieList {
   }
 
   _renderCard(film) {
-    const moviePresenter = new MoviePresenter(this._movieBoardComponent, this._closePopups);
-    moviePresenter.init(film);
+    this._moviePresenter = new MoviePresenter(this._movieBoardComponent, this._closePopups);
+    this._moviePresenter.init(film);
   }
 
   _renderCards() {

@@ -1,5 +1,5 @@
 import {generateComment} from '../mock/comment-mock';
-import AbstractView from './abstract.js';
+import SmartView from './smart.js';
 
 const comments = new Array(4).fill().map(() => generateComment());
 const createCommentTemplate = (comments) => {
@@ -127,7 +127,7 @@ const createFilmPopup = (film) => {
 </section>`;
 };
 
-export default class FilmPopup extends AbstractView {
+export default class FilmPopup extends SmartView {
   constructor(film) {
     super();
     this._film = film;

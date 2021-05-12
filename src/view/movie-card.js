@@ -38,15 +38,12 @@ export default class FilmCard extends AbstractView {
 
   _editClickHandler(evt) {
     evt.preventDefault();
-    // logger.log()
-    //todo условие
     this._callback.editClick();
   }
 
   setEditClickHandler(callback) {
     this._callback.editClick = callback;
-    // element.onload
-    this.getElement().querySelector('.film-card__poster').addEventListener('click', this._editClickHandler());
+    this.getElement().querySelector('.film-card__poster').addEventListener('click', this._editClickHandler);
     this.getElement().querySelector('.film-card__title').addEventListener('click', this._editClickHandler);
     this.getElement().querySelector('.film-card__comments').addEventListener('click', this._editClickHandler);
   }
