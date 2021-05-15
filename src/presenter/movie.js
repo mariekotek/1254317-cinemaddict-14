@@ -59,7 +59,7 @@ export default class Movie {
 
   }
 
-  _destroy() {
+  destroy() {
     remove(this._filmCardComponent);
     remove(this._popupComponent);
   }

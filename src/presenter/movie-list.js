@@ -27,7 +27,7 @@ export default class MovieList {
     this._moviePresenter = new MoviePresenter(this._movieBoardComponent, this._closePopups);
 
     this._mainMenuComponent = new MainMenuView().getElement();
-    this._mainSortComponent = new MainSortView().getElement();
+    this._mainSortComponent = new MainSortView();
     this._noFilmsComponent = new NoFilmsView().getElement();
     this._movieBoardComponent = new MovieBoardView().getElement();
     this._popupComponent = new FilmPopupView();
@@ -43,6 +43,7 @@ export default class MovieList {
 
   init(films) {
     this._films = films.slice();
+    this.moviePresenter = new MoviePresenter(this._movieBoardComponent, this._closePopups);
     this._sourcedFilms = films.slice();
     render(this._siteMainElement, this._movieBoardComponent, RenderPosition.AFTERBEGIN);
     this._renderBoard();
@@ -65,13 +66,12 @@ export default class MovieList {
 
   _clearFilms() {
     Object
-      .values(this._moviePresenter)
+      .values(this.moviePresenter)
       .forEach((presenter) => presenter.destroy());
-    this._moviePresenter = {};
+    this.moviePresenter = {};
     this._renderedFilmCount = CARDS_NUMBER_PER_STEP;
     remove(this._showMoreBtn);
   }
-
 
   _handleSortTypeChange(sortType) {
     if (this._currentSortType === sortType) {
@@ -91,8 +91,8 @@ export default class MovieList {
   }
 
   _renderSort() {
-    render(this._siteMainElement, this._mainSortComponent, RenderPosition.AFTERBEGIN);
-    //this._mainSortComponent.setSortTypeChangeHandler(this._handleSortTypeChange);
+    render(this._siteMainElement, this._mainSortComponent.getElement(), RenderPosition.AFTERBEGIN);
+    this._mainSortComponent.setSortTypeChangeHandler(this._handleSortTypeChange);
   }
 
   _renderUserRank() {
@@ -104,8 +104,8 @@ export default class MovieList {
   }
 
   _renderCard(film) {
-    this._moviePresenter = new MoviePresenter(this._movieBoardComponent, this._closePopups);
-    this._moviePresenter.init(film);
+    this.moviePresenter = new MoviePresenter(this._movieBoardComponent, this._closePopups);
+    this.moviePresenter.init(film);
   }
 
   _renderCards() {
