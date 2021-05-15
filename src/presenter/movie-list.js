@@ -7,7 +7,7 @@ import FilmPopupView from '../view/info-popup.js';
 import UserRankView from '../view/user-rank.js';
 import ShowMoreButtonView from '../view/show-more-btn.js';
 import MoviePresenter from './movie.js';
-import {SortType, sortFilmsDate, sortFilmsRank} from '../utils/sort.js';
+import {SortType, sortFilmsDate, sortFilmsRate} from '../utils/sort.js';
 
 import {render, RenderPosition, remove} from '../utils/render.js';
 // import {updateItem} from '../utils/create_element.js';
@@ -24,7 +24,8 @@ export default class MovieList {
     this._renderedFilmCount = CARDS_NUMBER_PER_STEP;
     this._currentSortType = SortType.DEFAULT;
     this._films = films;
-    this._moviePresenter = new MoviePresenter(this._movieBoardComponent, this._closePopups);
+    //this._moviePresenter = new MoviePresenter(this._movieBoardComponent, this._closePopups);
+    this._moviePresenters = {};
 
     this._mainMenuComponent = new MainMenuView().getElement();
     this._mainSortComponent = new MainSortView();
@@ -43,7 +44,7 @@ export default class MovieList {
 
   init(films) {
     this._films = films.slice();
-    this.moviePresenter = new MoviePresenter(this._movieBoardComponent, this._closePopups);
+    this._moviePresenter = new MoviePresenter(this._movieBoardComponent, this._closePopups);
     this._sourcedFilms = films.slice();
     render(this._siteMainElement, this._movieBoardComponent, RenderPosition.AFTERBEGIN);
     this._renderBoard();
@@ -55,7 +56,7 @@ export default class MovieList {
         this._films.sort(sortFilmsDate);
         break;
       case SortType.RATING:
-        this._films.sort(sortFilmsRank);
+        this._films.sort(sortFilmsRate);
         break;
       default:
         this._films = this._sourcedFilms.slice();
@@ -65,10 +66,11 @@ export default class MovieList {
   }
 
   _clearFilms() {
-    Object
-      .values(this.moviePresenter)
-      .forEach((presenter) => presenter.destroy());
-    this.moviePresenter = {};
+    // Object
+    //   .values(this._moviePresenters)
+    //   .forEach((presenter) => presenter.destroy());
+    // this._moviePresenters = {};
+    this._moviePresenter.destroy();
     this._renderedFilmCount = CARDS_NUMBER_PER_STEP;
     remove(this._showMoreBtn);
   }
@@ -104,8 +106,9 @@ export default class MovieList {
   }
 
   _renderCard(film) {
-    this.moviePresenter = new MoviePresenter(this._movieBoardComponent, this._closePopups);
-    this.moviePresenter.init(film);
+  //  const moviePresenter = new MoviePresenter(this._movieBoardComponent, this._closePopups);
+    this._moviePresenter.init(film);
+    this._moviePresenters[film.id] = this._moviePresenter;
   }
 
   _renderCards() {

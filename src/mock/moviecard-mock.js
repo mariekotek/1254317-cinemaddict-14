@@ -1,8 +1,7 @@
-import {getRandomInteger} from '../utils/get_random.js';
-import {generateRandom} from '../utils/get_random.js';
-import {getRandomNumber} from '../utils/get_random.js';
+import {getRandomInteger, generateRandom, generateId, getRandomNumber} from '../utils/get_random.js';
 
 // Данные-информация о фильмах
+const filmId = generateId();
 
 const posters = [
   'images/posters/the-dance-of-life.jpg',
@@ -64,6 +63,7 @@ const descriptions = [
 
 export const generateFilmCard = () => {
   return {
+    id: filmId(),
     poster: generateRandom(posters),
     age: generateRandom(ages),
     name: generateRandom(names),

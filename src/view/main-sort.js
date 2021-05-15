@@ -24,6 +24,21 @@ export default class MainSort extends AbstractView {
       return;
     }
     evt.preventDefault();
+    const currentBtn = evt.target;
+    const btnActive = 'sort__button--active';
+    const allButtons = this.getElement().querySelectorAll('a');
+
+    if (currentBtn.tagName !== 'A') {
+      return;
+    }
+
+    if (!currentBtn.classList.contains(btnActive)) {
+      allButtons.forEach((button) => {
+        button.classList.remove(btnActive);
+      });
+
+      currentBtn.classList.add(btnActive);
+    }
     this._callback.sortTypeChange(evt.target.dataset.sortType);
   }
 
