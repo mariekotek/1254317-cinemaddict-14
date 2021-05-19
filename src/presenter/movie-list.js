@@ -2,8 +2,6 @@ import NoFilmsView from '../view/films-list-empty.js';
 import MainMenuView from '../view/main-menu.js';
 import MainSortView from '../view/main-sort.js';
 import MovieBoardView from '../view/movie-board.js';
-import FilmCardView from '../view/movie-card.js';
-import FilmPopupView from '../view/info-popup.js';
 import UserRankView from '../view/user-rank.js';
 import ShowMoreButtonView from '../view/show-more-btn.js';
 import MoviePresenter from './movie.js';
@@ -12,8 +10,9 @@ import {SortType, sortFilmsDate, sortFilmsRate} from '../utils/sort.js';
 import {render, RenderPosition, remove} from '../utils/render.js';
 // import {updateItem} from '../utils/create_element.js';
 import {generateFilmCard} from '../mock/moviecard-mock';
+import {updateItem} from '../utils/create_element';
 
-const CARDS_NUMBER_PER_STEP = 4;
+const CARDS_NUMBER_PER_STEP = 5;
 const films = new Array(15).fill().map(() => generateFilmCard());
 
 export default class MovieList {
@@ -31,8 +30,6 @@ export default class MovieList {
     this._mainSortComponent = new MainSortView();
     this._noFilmsComponent = new NoFilmsView().getElement();
     this._movieBoardComponent = new MovieBoardView().getElement();
-    this._popupComponent = new FilmPopupView();
-    this._filmCardComponent = new FilmCardView();
     this._userRankComponent = new UserRankView().getElement();
     this._showMoreBtn = new ShowMoreButtonView();
 
@@ -40,11 +37,11 @@ export default class MovieList {
 
     this._handleShowMoreButtonClick = this._handleShowMoreButtonClick.bind(this);
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
+    this._handleCardChange = this._handleCardChange.bind(this);
   }
 
   init(films) {
     this._films = films.slice();
-    this._moviePresenter = new MoviePresenter(this._movieBoardComponent, this._closePopups);
     this._sourcedFilms = films.slice();
     render(this._siteMainElement, this._movieBoardComponent, RenderPosition.AFTERBEGIN);
     this._renderBoard();
@@ -66,13 +63,11 @@ export default class MovieList {
   }
 
   _clearFilms() {
-    // Object
-    //   .values(this._moviePresenters)
-    //   .forEach((presenter) => presenter.destroy());
-    // this._moviePresenters = {};
-    this._moviePresenter.destroy();
+    // console.log(this);
+    Object
+      .values(this._moviePresenters)
+      .forEach((presenter) => presenter.destroy());
     this._renderedFilmCount = CARDS_NUMBER_PER_STEP;
-    remove(this._showMoreBtn);
   }
 
   _handleSortTypeChange(sortType) {
@@ -105,10 +100,22 @@ export default class MovieList {
     render(this._movieBoardComponent, this._noFilmsComponent, RenderPosition.AFTERBEGIN);
   }
 
+  _handleCardChange(updatedCard) {
+    this._films = updateItem(this._films, updatedCard);
+    this._clearFilms();
+    this._renderCards();
+  }
+
   _renderCard(film) {
-  //  const moviePresenter = new MoviePresenter(this._movieBoardComponent, this._closePopups);
-    this._moviePresenter.init(film);
-    this._moviePresenters[film.id] = this._moviePresenter;
+    const moviePresenter = new MoviePresenter(
+      this._movieBoardComponent,
+      this._handleCardChange,
+      this._closePopups,
+      this._clearFilms,
+      this._renderCards,
+    );
+    moviePresenter.init(film);
+    this._moviePresenters[film.id] = moviePresenter;
   }
 
   _renderCards() {

@@ -1,6 +1,9 @@
 import {generateComment} from '../mock/comment-mock';
+import {getRandomInteger, generateRandom, generateId, getRandomNumber} from '../utils/get_random.js';
 import SmartView from './smart.js';
+import {UserAction} from '../utils/user.js';
 
+const emojis = ['smile','sleeping','puke','angry'];
 const comments = new Array(4).fill().map(() => generateComment());
 const createCommentTemplate = (comments) => {
 // const {emotion, message, author, date} = comment;
@@ -22,7 +25,7 @@ const createCommentTemplate = (comments) => {
 
 const createFilmPopup = (film) => {
   const {poster, age, name, originalName, rate, director, actors, writers, releaseDate, runtime, country, genre,
-    description} = film;
+    description, isFavourite, isWatched, isInWatchList} = film;
   return `<section class="film-details" id="film-details">
   <form class="film-details__inner" action="" method="get">
     <div class="film-details__top-container">
@@ -83,11 +86,11 @@ const createFilmPopup = (film) => {
         </div>
       </div>
       <section class="film-details__controls">
-        <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist">
+        <input type="checkbox" ${isInWatchList && 'checked'} class="film-details__control-input visually-hidden" id="watchlist" name="watchlist">
         <label for="watchlist" class="film-details__control-label film-details__control-label--watchlist">Add to watchlist</label>
-        <input type="checkbox" class="film-details__control-input visually-hidden" id="watched" name="watched">
+        <input type="checkbox" ${isWatched && 'checked'} class="film-details__control-input visually-hidden" id="watched" name="watched">
         <label for="watched" class="film-details__control-label film-details__control-label--watched">Already watched</label>
-        <input type="checkbox" class="film-details__control-input visually-hidden" id="favorite" name="favorite">
+        <input type="checkbox" ${isFavourite && 'checked'} class="film-details__control-input visually-hidden" id="favorite" name="favorite">
         <label for="favorite" class="film-details__control-label film-details__control-label--favorite">Add to favorites</label>
       </section>
     </div>
@@ -128,14 +131,36 @@ const createFilmPopup = (film) => {
 };
 
 export default class FilmPopup extends SmartView {
-  constructor(film) {
+  constructor(film, _handleWatchlistClick, _handleFavoriteClick, _handleWatchedClick) {
     super();
-    this._film = film;
+    this._data = FilmPopup.parseDataToState(film, comments);
+    this._film = this._data.film;
+    this._comments = this._data.comments;
+    this._handleWatchlistClick = _handleWatchlistClick;
+    this._handleFavoriteClick = _handleFavoriteClick;
+    this._handleWatchedClick = _handleWatchedClick;
+
     this._editClickHandler = this._editClickHandler.bind(this);
+    this.setWatchedClick = this.setWatchedClick.bind(this);
+    this.setFavouritesClick = this.setFavouritesClick.bind(this);
+    this.setInWatchListClick = this.setInWatchListClick.bind(this);
+    this._setCommentInputHandler = this._setCommentInputHandler.bind(this);
+    this._handleSetWatchedClick = this._handleSetWatchedClick.bind(this);
+    this._handlerEmojiChoose = this._handlerEmojiChoose.bind(this);
+    this._commentInputHandler = this._commentInputHandler.bind(this);
+    this._deleteCommentHandler = this._deleteCommentHandler.bind(this);
+
+    this._callback = {};
   }
 
   getTemplate() {
-    return createFilmPopup(this._film);
+    return createFilmPopup(this._data);
+  }
+
+  _reset(film, comments) {
+    this.updateData(
+      FilmPopup.parseStateToData(film, comments),
+    );
   }
 
   _editClickHandler(evt) {
@@ -148,26 +173,96 @@ export default class FilmPopup extends SmartView {
     this.getElement().querySelector('.film-details__close-btn').addEventListener('click', this._editClickHandler);
   }
 
-  // hideElement() {
-  //   this._element.classList.add('hidden');
-  //   this._element = null;
-  // }
-  // setClickClosePopup() {
-  //   this.getElement().querySelector('.film-details__close-btn').addEventListener('click', () => this.hideElement());
-  //     if(document.querySelector('body').classList.contains('hide-overflow')) {
-  //     document.querySelector('body').classList.remove('hide-overflow');
-  //   }
-  // }
+  _setInnerHandlers() {
+    this.getElement().querySelector('.film-details__emoji-list').addEventListener('change', this._handlerEmojiChoose);
+    this.getElement().querySelector('.film-details__comment-input').addEventListener('input', this._commentInputHandler);
+    // this.getElement().addEventListener('keydown', this._handlerCommentSend);
+    this.getElement().querySelector('.film-details__comments-list').addEventListener('click', this._deleteCommentHandler);
+  }
 
-  // setClosePopupEsc() {
-  //   const onEscKeyDown = (evt) => {
-  //     if (evt && (evt.key === 'Escape' || evt.key === 'Esc')) {
-  //       evt.preventDefault();
-  //       this.setClickClosePopup();
-  //       if(document.querySelector('body').classList.contains('hide-overflow')) {
-  //         document.querySelector('body').classList.remove('hide-overflow');
-  //       }
-  //     }
-  //   };
-  // }
+  _handleSetWatchedClick(evt) {
+    evt.preventDefault();
+    this._callback._handleWatchedClick();
+  }
+
+  setWatchedClick(callback) {
+    this._callback._handleWatchedClick = callback;
+    this.getElement().querySelector('.film-details__control-label--watched').addEventListener('click', this._handleSetWatchedClick);
+  }
+
+  setFavouritesClick(callback) {
+    this._callback.setFavouritesClick = callback;
+    this.getElement().querySelector('.film-details__control-label--favorite').addEventListener('click', this._handleFavoriteClick);
+  }
+
+  setInWatchListClick(callback) {
+    this._callback.setInWatchListClick = callback;
+    this.getElement().querySelector('.film-details__control-label--watchlist').addEventListener('click', this._handleWatchlistClick);
+  }
+
+  _handlerEmojiChoose(evt) {
+      evt.preventDefault();
+      const currentScroll = document.querySelector('.film-details').scrollTop;
+      this.updateData({
+        emoji: evt.target.value,
+      });
+    document.querySelector('.film-details').scrollTo(0, currentScroll);
+  }
+
+  _setCommentInputHandler(callback) {
+    this._callback.sendComment = callback;
+    document.addEventListener('keydown', this._sendCommentHandler);
+  }
+
+  _setDeleteCommentHandler(callback) {
+    this._callback.deleteClick = callback;
+    this.getElement().querySelectorAll('.film-details__comment-delete').forEach((deleteButton) => deleteButton.addEventListener('click', this._deleteCommentHandler));
+  }
+
+  _commentInputHandler(evt) {
+    const currentScroll = this.getElement().scrollTop;
+    if (this._data.emoji === '' || this._data.userComment === '') {
+      throw new Error('Can`t add comment without text and emotion');
+    }
+    this._callback.sendComment(evt, FilmPopup.parseStateToData(this._data, UserAction.ADD_COMMENT));
+    this.getElement().scrollTo(0, currentScroll);
+  }
+
+  _deleteCommentHandler(evt) {
+    evt.preventDefault();
+    const currentScroll = this.getElement().scrollTop;
+    this._callback.deleteClick(FilmPopup.parseStateToData(this._data, UserAction.DELETE_COMMENT), evt.target.id);
+    this.getElement().scrollTo(0, currentScroll);
+  }
+
+  static parseDataToState(filmData, filmCommentsData) {
+    return {
+      film: Object.assign({}, filmData),
+      filmComments: filmCommentsData.slice(),
+      emoji: '',
+      userComment: '',
+    };
+  }
+
+  static parseStateToData(data, userActionType) {
+    data = Object.assign({}, data);
+
+    switch(userActionType) {
+      case UserAction.ADD_COMMENT:
+        data.filmComments.push({
+          id: generateId(),
+          text: data.userComment,
+          emotion: data.emoji,
+          // author: generateRandom(NAMES),
+          // date: getCurrentDate(),
+        });
+        delete data.emoji;
+        delete data.userComment;
+        break;
+      case UserAction.DELETE_COMMENT:
+        break;
+    }
+    return data;
+  }
+
 }
