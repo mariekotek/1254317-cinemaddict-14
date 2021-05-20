@@ -1,9 +1,9 @@
 import {generateComment} from '../mock/comment-mock';
-import {getRandomInteger, generateRandom, generateId, getRandomNumber} from '../utils/get_random.js';
+import {generateId} from '../utils/get_random.js';
 import SmartView from './smart.js';
 import {UserAction} from '../utils/user.js';
 
-const emojis = ['smile','sleeping','puke','angry'];
+// const emojis = ['smile','sleeping','puke','angry'];
 const comments = new Array(4).fill().map(() => generateComment());
 const createCommentTemplate = (comments) => {
 // const {emotion, message, author, date} = comment;
@@ -150,11 +150,15 @@ export default class FilmPopup extends SmartView {
     this._commentInputHandler = this._commentInputHandler.bind(this);
     this._deleteCommentHandler = this._deleteCommentHandler.bind(this);
 
+    this._setInnerHandlers();
     this._callback = {};
   }
 
   getTemplate() {
-    return createFilmPopup(this._data);
+    if(!this._data) {
+      return '';
+    }
+    return createFilmPopup(this._data.film);
   }
 
   _reset(film, comments) {
@@ -174,10 +178,11 @@ export default class FilmPopup extends SmartView {
   }
 
   _setInnerHandlers() {
-    this.getElement().querySelector('.film-details__emoji-list').addEventListener('change', this._handlerEmojiChoose);
-    this.getElement().querySelector('.film-details__comment-input').addEventListener('input', this._commentInputHandler);
-    // this.getElement().addEventListener('keydown', this._handlerCommentSend);
-    this.getElement().querySelector('.film-details__comments-list').addEventListener('click', this._deleteCommentHandler);
+    // this.getElement().querySelector('.film-details__emoji-list').addEventListener('change', this._handlerEmojiChoose);
+    // this.getElement().querySelector('.film-details__comment-input').addEventListener('input', this._commentInputHandler);
+    // // this.getElement().addEventListener('keydown', this._handlerCommentSend);
+    // this.getElement().querySelector('.film-details__comments-list').addEventListener('click', this._deleteCommentHandler);
+    this._setDeleteCommentHandler();
   }
 
   _handleSetWatchedClick(evt) {
@@ -201,11 +206,11 @@ export default class FilmPopup extends SmartView {
   }
 
   _handlerEmojiChoose(evt) {
-      evt.preventDefault();
-      const currentScroll = document.querySelector('.film-details').scrollTop;
-      this.updateData({
-        emoji: evt.target.value,
-      });
+    evt.preventDefault();
+    const currentScroll = document.querySelector('.film-details').scrollTop;
+    this.updateData({
+      emoji: evt.target.value,
+    });
     document.querySelector('.film-details').scrollTo(0, currentScroll);
   }
 

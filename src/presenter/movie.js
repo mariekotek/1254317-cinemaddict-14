@@ -1,6 +1,6 @@
 import FilmCardView from '../view/movie-card.js';
 import FilmPopupView from '../view/info-popup.js';
-import {UserAction} from '../utils/user.js';
+// import {UserAction} from '../utils/user.js';
 
 import {render, RenderPosition, remove, onEscKeyDown} from '../utils/render';
 //import {generateFilmCard} from '../mock/moviecard-mock';
