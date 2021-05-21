@@ -1,6 +1,6 @@
 import FilmCardView from '../view/movie-card.js';
 import FilmPopupView from '../view/info-popup.js';
-// import {UserAction} from '../utils/user.js';
+import {UserAction, UpdateType} from '../utils/user.js';
 
 import {render, RenderPosition, remove, onEscKeyDown} from '../utils/render';
 //import {generateFilmCard} from '../mock/moviecard-mock';
@@ -29,11 +29,13 @@ export default class Movie {
     this._handleWatchlistClick = this._handleWatchlistClick.bind(this);
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
     this._handleWatchedClick = this._handleWatchedClick.bind(this);
+    this._handleDeleteClick = this._handleDeleteClick.bind(this);
   }
 
-  init(film, comments) {
+  init(film, comments, changeData) {
     this._film = film;
     this._comments = comments;
+    this._changeData = changeData;
 
     // const prevFilmCardComponent = this._filmCardComponent;
     // const prevPopupComponent = this._popupComponent;
@@ -89,22 +91,6 @@ export default class Movie {
     }
   }
 
-  // _handleDeleteComment(commentId, film) {
-  //   this._changeData(
-  //     UserAction.UPDATE_FILM,
-  //     UpdateType.PATCH,
-  //     Object.assign(
-  //       {},
-  //       this._film,
-  //       {
-  //         comments: film.comments,
-  //       },
-  //     ),
-  //   );
-  //
-  //   this._commentsModel.deleteComment(UpdateType.MINOR, commentId, film);
-  // }
-
   _handleWatchlistClick() {
     this._cardChangeCallback(
       Object.assign(
@@ -136,7 +122,26 @@ export default class Movie {
           isFavourite: !this._film.isFavourite,
         },
       ),
-
     );
   }
+
+  _handleDeleteClick(data, commentId) {
+    const commentIndex = data.film.comments.findIndex((comment) => comment === Number(commentId));
+
+    data.film.comments = [
+      ...data.film.comments.slice(0, commentIndex),
+      ...data.film.comments.slice(commentIndex + 1),
+    ];
+
+    this._popupComponent.reset(data.film, data.filmComments);
+
+    this._changeData(
+      UserAction.DELETE_COMMENT,
+      UpdateType.MINOR,
+      data.film,
+      data.filmComments[commentId - 1],
+    );
+  }
+
+
 }

@@ -1,5 +1,6 @@
 import {generateComment} from '../mock/comment-mock';
 import {generateId} from '../utils/get_random.js';
+
 import SmartView from './smart.js';
 import {UserAction} from '../utils/user.js';
 
@@ -178,10 +179,10 @@ export default class FilmPopup extends SmartView {
   }
 
   _setInnerHandlers() {
-    // this.getElement().querySelector('.film-details__emoji-list').addEventListener('change', this._handlerEmojiChoose);
-    // this.getElement().querySelector('.film-details__comment-input').addEventListener('input', this._commentInputHandler);
-    // // this.getElement().addEventListener('keydown', this._handlerCommentSend);
-    // this.getElement().querySelector('.film-details__comments-list').addEventListener('click', this._deleteCommentHandler);
+    this.getElement().querySelector('.film-details__emoji-list').addEventListener('change', this._handlerEmojiChoose);
+    this.getElement().querySelector('.film-details__comment-input').addEventListener('input', this._commentInputHandler);
+    this.getElement().addEventListener('keydown', this._commentInputHandler());
+    this.getElement().querySelector('.film-details__comments-list').addEventListener('click', this._deleteCommentHandler);
     this._setDeleteCommentHandler();
   }
 
@@ -216,7 +217,7 @@ export default class FilmPopup extends SmartView {
 
   _setCommentInputHandler(callback) {
     this._callback.sendComment = callback;
-    document.addEventListener('keydown', this._sendCommentHandler);
+    document.addEventListener('keydown', this._commentInputHandler);
   }
 
   _setDeleteCommentHandler(callback) {
@@ -226,9 +227,9 @@ export default class FilmPopup extends SmartView {
 
   _commentInputHandler(evt) {
     const currentScroll = this.getElement().scrollTop;
-    if (this._data.emoji === '' || this._data.userComment === '') {
-      throw new Error('Can`t add comment without text and emotion');
-    }
+    // if (this._data.emoji === '' || this._data.newComment === '') {
+    //   throw new Error('Can`t add comment without text and emotion');
+    // }
     this._callback.sendComment(evt, FilmPopup.parseStateToData(this._data, UserAction.ADD_COMMENT));
     this.getElement().scrollTo(0, currentScroll);
   }
@@ -245,7 +246,7 @@ export default class FilmPopup extends SmartView {
       film: Object.assign({}, filmData),
       filmComments: filmCommentsData.slice(),
       emoji: '',
-      userComment: '',
+      newComment: '',
     };
   }
 
@@ -256,13 +257,11 @@ export default class FilmPopup extends SmartView {
       case UserAction.ADD_COMMENT:
         data.filmComments.push({
           id: generateId(),
-          text: data.userComment,
+          text: data.newComment,
           emotion: data.emoji,
-          // author: generateRandom(NAMES),
-          // date: getCurrentDate(),
         });
         delete data.emoji;
-        delete data.userComment;
+        delete data.newComment;
         break;
       case UserAction.DELETE_COMMENT:
         break;

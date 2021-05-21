@@ -1,5 +1,6 @@
 import {generateFilmCard} from './mock/moviecard-mock.js';
 import MovieListPresenter from './presenter/movie-list.js';
+import FilmsModel from './model/movies.js';
 
 // const CARDS_NUMBER = 5;
 // const TOP_RATED = 2;
@@ -12,6 +13,9 @@ const films = new Array(15).fill().map(() => generateFilmCard());
 
 const siteHeaderElement = document.querySelector('.header');
 const siteMainElement = document.querySelector('.main');
+
+const filmsModel = new FilmsModel();
+filmsModel.setFilms(films);
 // const siteFooterElement = document.querySelector('.footer');
 
 // // Рендерит сортировку и фильтры
@@ -113,5 +117,5 @@ const siteMainElement = document.querySelector('.main');
 //   });
 // }
 
-const movieListPresenter = new MovieListPresenter(siteMainElement, siteHeaderElement);
+const movieListPresenter = new MovieListPresenter(siteMainElement, siteHeaderElement, filmsModel);
 movieListPresenter.init(films);

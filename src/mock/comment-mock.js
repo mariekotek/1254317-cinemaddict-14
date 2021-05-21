@@ -1,4 +1,4 @@
-import {generateRandom} from '../utils/get_random.js';
+import {generateRandom, generateId} from '../utils/get_random.js';
 
 //данные для комментариев
 
@@ -31,6 +31,7 @@ const messages = [
 
 export const generateComment = () => {
   return {
+    id: generateId(),
     emotion: generateRandom(emotions),
     date: generateRandom(dates),
     author: generateRandom(authors),

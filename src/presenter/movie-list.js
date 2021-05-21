@@ -16,9 +16,10 @@ const CARDS_NUMBER_PER_STEP = 5;
 const films = new Array(15).fill().map(() => generateFilmCard());
 
 export default class MovieList {
-  constructor(siteMainElement, siteHeaderElement) {
+  constructor(siteMainElement, siteHeaderElement, filmsModel) {
     this._siteMainElement = siteMainElement;
     this._siteHeaderElement = siteHeaderElement;
+    this._filmsModel = filmsModel;
 
     this._renderedFilmCount = CARDS_NUMBER_PER_STEP;
     this._currentSortType = SortType.DEFAULT;
@@ -46,6 +47,11 @@ export default class MovieList {
     render(this._siteMainElement, this._movieBoardComponent, RenderPosition.AFTERBEGIN);
     this._renderBoard();
   }
+
+  _getFilms() {
+    return this._filmsModel.getFilms();
+  }
+
 
   _sortFilms(sortType) {
     switch (sortType) {
